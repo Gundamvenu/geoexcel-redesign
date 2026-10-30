@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+import { u } from '../data/url';
+---
+<Base title="Page not found" description="This page does not exist. Browse Geo Excel products or send an enquiry.">
+  <section class="notfound">
+    <div class="wrap">
+      <p class="big" aria-hidden="true"><span>4</span><span>0</span><span>4</span></p>
+      <h1 style="font-size:clamp(1.8rem,3vw+.5rem,2.6rem)">This page has left the port</h1>
+      <p class="lede" style="margin-inline:auto">The link may be old or mistyped. These will get you back on route.</p>
+      <div class="cta-row" style="justify-content:center">
+        <a class="btn btn-primary" href={u('products/')}>Browse products</a>
+        <a class="btn" href={u()}>Home</a>
+        <a class="btn" href={u('enquiry/')}>Request a quote</a>
+      </div>
+    </div>
+  </section>
+</Base>

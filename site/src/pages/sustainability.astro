@@ -1,0 +1,49 @@
+---
+import Base from '../layouts/Base.astro';
+import { u } from '../data/url';
+
+// Text from the Sustainability page of geoexcel.group, with spelling corrected only.
+const approach = [
+  'Uplifting livelihood and ensuring good working conditions',
+  'Implementing living wages for all stakeholders',
+  'Climate change',
+  'Building an environmentally sustainable business',
+];
+const principles = [
+  'We follow sustainable agricultural methods of collection of natural raw materials.',
+  'We source natural raw material using proper harvesting methods, sourced at the right time for the right price.',
+  'We support the preservation of endangered plant species and avoid use of them.',
+  'We practise the organic farming process and avoid the use of pesticides and chemicals.',
+  'We avoid raw materials that may affect climate conditions.',
+];
+---
+<Base
+  title="Sustainability | Approach and principles"
+  description="Geo Excel's published sustainability approach: livelihoods and working conditions, living wages, climate, and sourcing principles for natural raw materials."
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <p class="eyebrow">Sustainability</p>
+      <h1>Our approach and the principles we follow</h1>
+      <p>The company’s focus on the UN 17 Sustainable Development Goals and CSR dates from 2019. This is what Geo Excel publishes about its approach.</p>
+    </div>
+  </section>
+  <section class="section" style="padding-top:8px">
+    <div class="wrap form-wrap">
+      <div>
+        <h2>Our approach</h2>
+        <ul class="checklist" style="columns:1">
+          {approach.map((a) => <li>{a}</li>)}
+        </ul>
+      </div>
+      <div>
+        <h2>Principles we follow</h2>
+        <ul class="checklist" style="columns:1">
+          {principles.map((a) => <li>{a}</li>)}
+        </ul>
+        <p class="muted">Statements are the company’s own, from its public website. Audits or certifications supporting these practices are not published on the current site.</p>
+        <p><a class="btn" href={u('enquiry/')}>Ask about sourcing</a></p>
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,46 @@
+---
+import Base from '../layouts/Base.astro';
+import { company, timeline } from '../data/company';
+import { u } from '../data/url';
+---
+<Base
+  title="About | From farming to export trade since the 1980s"
+  description="Geo Excel is short for Geographic Excellence. The group began in agriculture in the 1980s, moved into cement, steel and civil construction, and started export trade as Geo Excel in 2023."
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <p class="eyebrow">About</p>
+      <h1>Geographic Excellence, with a farming heritage</h1>
+      <p>
+        With a heritage stemming from the 1980s, the name “GeoExcel”, short for Geographic Excellence, was officially brought to life in 2023.
+        From growing rice, sugarcane and sesame to a single cement and steel dealership, the GeoExcel Group today has multiple verticals spanning agriculture, automotive, construction and trading.
+      </p>
+    </div>
+  </section>
+  <section class="section" style="padding-top:8px">
+    <div class="wrap">
+      <ol class="timeline">
+        {timeline.map((t) => (
+          <li><span class="when">{t.when}</span><div><h2 style="font-size:1.5rem">{t.title}</h2><p>{t.text}</p></div></li>
+        ))}
+      </ol>
+    </div>
+  </section>
+  <section class="section alt">
+    <div class="wrap form-wrap">
+      <div class="prose">
+        <h2>The company behind the export trade</h2>
+        <p>Export trade is carried out by <strong>{company.legalName}</strong>, registered in Bangalore and registered with the export bodies listed on our <a href={u('credentials/')}>credentials page</a>.</p>
+        <p>Geo Excel is registered as a merchant exporter. Which products each registration covers is stated on that page.</p>
+        <p><a class="btn btn-primary" href={u('enquiry/')}>Send an enquiry</a></p>
+      </div>
+      <div class="contact-card">
+        <address>
+          <div><span class="k">Registered office</span>{company.addressLines.join(', ')}</div>
+          <div><span class="k">Phone</span><a href={`tel:${company.phoneHref}`}>{company.phone}</a></div>
+          <div><span class="k">Email</span><a href={`mailto:${company.email}`}>{company.email}</a></div>
+        </address>
+      </div>
+    </div>
+  </section>
+</Base>

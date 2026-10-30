@@ -1,0 +1,91 @@
+---
+import Base from '../../layouts/Base.astro';
+import { products, categories, catAccent, byCategory, cardSpecs } from '../../data/catalog';
+import type { Product } from '../../data/catalog';
+import { u } from '../../data/url';
+
+export function getStaticPaths() {
+  return products.map((p) => ({ params: { id: p.id }, props: { p } }));
+}
+const { p } = Astro.props as { p: Product };
+const cat = categories[p.category];
+const related = byCategory(p.category).filter((x) => x.id !== p.id).slice(0, 3);
+const specEntries = Object.entries(p.specs);
+const lead = specEntries.slice(0, 3).map(([k, v]) => `${k}: ${v}`).join('; ');
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: p.name,
+  category: cat.name,
+  description: p.about || `${p.name} exported by Geo Excel. ${lead}`,
+  brand: { '@type': 'Brand', name: 'Geo Excel' },
+};
+---
+<Base
+  title={`${p.name} | ${cat.name}`}
+  description={`${p.name}: specification sheet. ${lead}. Request a quote from Geo Excel, Bangalore.`.slice(0, 300)}
+  jsonLd={ld}
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <ol>
+          <li><a href={u('products/')}>Products</a></li>
+          <li><a href={u(`products/?c=${p.category}`)}>{cat.name}</a></li>
+          <li aria-current="page">{p.name}</li>
+        </ol>
+      </nav>
+      <p class="eyebrow" style={`color:var(--orange-ink)`}>{cat.name}</p>
+      <h1 style="font-size:clamp(2rem,4vw+.5rem,3.4rem)">{p.name}</h1>
+      {p.about && <p>{p.about}</p>}
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:8px">
+    <div class="wrap detail">
+      <div>
+        <div class="sheet">
+          <h2>Specification sheet</h2>
+          <table>
+            <tbody>
+              {specEntries.map(([k, v]) => <tr><th scope="row">{k}</th><td>{v}</td></tr>)}
+            </tbody>
+          </table>
+        </div>
+        {p.note && (
+          <div class="sheet" style="margin-top:18px">
+            <h2>Specification note</h2>
+            <p style="padding:14px 20px;margin:0">{p.note}</p>
+          </div>
+        )}
+        <p class="source-note">Transcribed from the product listing on geoexcel.group. Confirm the exact specification, packing and documentation with Geo Excel before ordering.</p>
+      </div>
+      <aside class="aside" aria-labelledby="quote-h">
+        <h2 id="quote-h">Request a quote</h2>
+        <p>Add this product to your enquiry, then tell us quantity and destination.</p>
+        <button class="btn btn-ghost" type="button" data-add={p.id} aria-pressed="false"><span class="lbl">Add to enquiry</span></button>
+        <a class="btn btn-accent" href={u(`enquiry/?p=${p.id}`)}>Quote this product now</a>
+      </aside>
+    </div>
+  </section>
+
+  {related.length > 0 && (
+    <section class="section alt">
+      <div class="wrap">
+        <h2>More in {cat.name}</h2>
+        <div class="grid">
+          {related.map((r) => (
+            <article class="pcard" style={`--accent:${catAccent[r.category]}`}>
+              <h3><a href={u(`products/${r.id}/`)}>{r.name}</a></h3>
+              <dl class="mini">{cardSpecs(r).map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}</dl>
+              <div class="actions">
+                <a class="btn btn-sm" href={u(`products/${r.id}/`)}>Spec sheet</a>
+                <button class="btn btn-sm btn-primary" type="button" data-add={r.id} aria-pressed="false"><span class="lbl">Add to enquiry</span></button>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+</Base>

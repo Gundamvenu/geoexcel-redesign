@@ -1,0 +1,207 @@
+---
+import Base from '../layouts/Base.astro';
+import { company } from '../data/company';
+import { products } from '../data/catalog';
+import { u } from '../data/url';
+
+// Optional free form backend (Web3Forms). Without a key the form falls back to composing an email to the company address.
+const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY || '';
+const names = Object.fromEntries(products.map((p) => [p.id, p.name]));
+---
+<Base
+  title="Request a quote | Enquiry"
+  description="Send Geo Excel a structured quote request: choose products, add quantity and destination, and send. Phone +91 8035110602, email info@geoexcel.group, Bangalore, India."
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <p class="eyebrow">Request a quote</p>
+      <h1>Tell us what you need to ship</h1>
+      <p>Products you added are already in the list below. Add quantity and destination, and send.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:8px">
+    <div class="wrap form-wrap">
+      <form class="enquiry" id="enquiry" novalidate data-key={accessKey} data-email={company.email} data-names={JSON.stringify(names)} data-products={u('products/')}>
+        <div class="basket" id="basket" aria-live="polite">
+          <strong>Products in this enquiry <span class="count" data-count>0</span></strong>
+          <ul id="basket-list"></ul>
+          <p class="muted" id="basket-empty" style="margin:8px 0 0;font-size:.95rem">None yet. <a href={u('products/')}>Browse the catalogue</a> or describe what you need in the message.</p>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="name">Your name <span class="req" aria-hidden="true">*</span></label>
+            <input id="name" name="name" type="text" autocomplete="name" required aria-describedby="name-err" />
+            <span class="err" id="name-err"></span>
+          </div>
+          <div class="field">
+            <label for="company">Company <span class="req" aria-hidden="true">*</span></label>
+            <input id="company" name="company" type="text" autocomplete="organization" required aria-describedby="company-err" />
+            <span class="err" id="company-err"></span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="email">Email <span class="req" aria-hidden="true">*</span></label>
+            <input id="email" name="email" type="email" autocomplete="email" required aria-describedby="email-err" />
+            <span class="err" id="email-err"></span>
+          </div>
+          <div class="field">
+            <label for="phone">Phone / WhatsApp <span class="hint">(optional)</span></label>
+            <input id="phone" name="phone" type="tel" autocomplete="tel" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="country">Destination country <span class="req" aria-hidden="true">*</span></label>
+            <input id="country" name="country" type="text" autocomplete="country-name" required aria-describedby="country-err" />
+            <span class="err" id="country-err"></span>
+          </div>
+          <div class="field">
+            <label for="qty">Quantity per shipment <span class="hint">(optional)</span></label>
+            <input id="qty" name="qty" type="text" placeholder="e.g. one 20 ft container" />
+          </div>
+        </div>
+        <div class="field">
+          <label for="message">Message <span class="hint">(pack size, grade, documents needed, timing)</span></label>
+          <textarea id="message" name="message"></textarea>
+        </div>
+        <input class="hp" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+        <div>
+          <button class="btn btn-primary" type="submit" id="send">Send enquiry</button>
+        </div>
+        <div class="status" id="status" role="status" tabindex="-1" hidden></div>
+        <div id="fallback" hidden>
+          <p class="muted" style="margin:0 0 10px">If your email app did not open, copy the message and send it to <a href={`mailto:${company.email}`}>{company.email}</a>.</p>
+          <textarea id="copy-text" readonly aria-label="Enquiry text to copy" style="min-height:160px"></textarea>
+          <button class="btn btn-sm" type="button" id="copy" style="margin-top:10px">Copy message</button>
+        </div>
+      </form>
+
+      <aside class="contact-card" aria-label="Contact details">
+        <h2 style="font-size:1.4rem">Prefer to talk or write?</h2>
+        <address>
+          <div><span class="k">Phone</span><a href={`tel:${company.phoneHref}`}>{company.phone}</a></div>
+          <div><span class="k">Email</span><a href={`mailto:${company.email}`}>{company.email}</a></div>
+          <div><span class="k">Registered office</span>{company.addressLines.join(', ')}</div>
+          <div><span class="k">Company</span>{company.legalName}</div>
+        </address>
+      </aside>
+    </div>
+  </section>
+
+  <script>
+    import { getBasket, remove, clear, add } from '../scripts/basket';
+
+    const form = document.getElementById('enquiry') as HTMLFormElement;
+    const names: Record<string, string> = JSON.parse(form.dataset.names!);
+    const status = document.getElementById('status')!;
+    const fallback = document.getElementById('fallback')!;
+    const list = document.getElementById('basket-list')!;
+    const emptyMsg = document.getElementById('basket-empty')!;
+    const send = document.getElementById('send') as HTMLButtonElement;
+
+    // ?p=id1,id2 pre-selects products (used by "Quote this product now").
+    new URLSearchParams(location.search).get('p')?.split(',').forEach((id) => { if (names[id]) add(id); });
+
+    function drawBasket() {
+      const ids = getBasket().filter((id) => names[id]);
+      list.replaceChildren(...ids.map((id) => {
+        const li = document.createElement('li');
+        const span = document.createElement('span'); span.textContent = names[id];
+        const b = document.createElement('button'); b.type = 'button'; b.textContent = '×';
+        b.setAttribute('aria-label', `Remove ${names[id]}`);
+        b.addEventListener('click', () => remove(id));
+        li.append(span, b);
+        return li;
+      }));
+      emptyMsg.hidden = ids.length > 0;
+    }
+    document.addEventListener('basket:change', drawBasket);
+    drawBasket();
+
+    const field = (n: string) => form.elements.namedItem(n) as HTMLInputElement;
+    const rules: Record<string, (v: string) => string> = {
+      name: (v) => (v.trim() ? '' : 'Please enter your name.'),
+      company: (v) => (v.trim() ? '' : 'Please enter your company name.'),
+      email: (v) => (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) ? '' : 'Please enter a valid email address.'),
+      country: (v) => (v.trim() ? '' : 'Please enter the destination country.'),
+    };
+    function validate(): boolean {
+      let first: HTMLInputElement | null = null;
+      for (const [n, rule] of Object.entries(rules)) {
+        const el = field(n);
+        const msg = rule(el.value);
+        document.getElementById(`${n}-err`)!.textContent = msg;
+        el.setAttribute('aria-invalid', String(!!msg));
+        if (msg && !first) first = el;
+      }
+      first?.focus();
+      return !first;
+    }
+    Object.keys(rules).forEach((n) => field(n).addEventListener('input', () => {
+      if (field(n).getAttribute('aria-invalid') === 'true') {
+        const msg = rules[n](field(n).value);
+        document.getElementById(`${n}-err`)!.textContent = msg;
+        field(n).setAttribute('aria-invalid', String(!!msg));
+      }
+    }));
+
+    function compose() {
+      const ids = getBasket().filter((id) => names[id]);
+      const v = (n: string) => field(n).value.trim();
+      const lines: string[] = ['Quote request via Geo Excel website', '', `Name: ${v('name')}`, `Company: ${v('company')}`, `Email: ${v('email')}`];
+      if (v('phone')) lines.push(`Phone: ${v('phone')}`);
+      lines.push(`Destination: ${v('country')}`);
+      if (v('qty')) lines.push(`Quantity: ${v('qty')}`);
+      lines.push('', 'Products:', ...(ids.length ? ids.map((id) => `- ${names[id]}`) : ['- (none selected)']));
+      if (v('message')) lines.push('', 'Message:', v('message'));
+      return lines.join('\n');
+    }
+
+    function show(kind: 'ok' | 'info' | 'bad', text: string) {
+      status.className = `status ${kind}`;
+      status.textContent = text;
+      status.hidden = false;
+      status.focus();
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if ((field('botcheck') as HTMLInputElement).checked) return; // honeypot
+      if (!validate()) return;
+      const text = compose();
+      const key = form.dataset.key;
+      const to = form.dataset.email!;
+      const subject = `Quote request from ${field('company').value.trim()}`;
+      if (key) {
+        send.disabled = true; send.textContent = 'Sending…';
+        try {
+          const res = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({ access_key: key, subject, from_name: field('name').value.trim(), email: field('email').value.trim(), message: text }),
+          });
+          const data = await res.json();
+          if (!res.ok || !data.success) throw new Error(data.message || 'Send failed');
+          show('ok', 'Thank you. Your enquiry has been sent.');
+          clear(); form.reset(); fallback.hidden = true;
+        } catch {
+          show('bad', `We could not send the enquiry from this page. Please email ${to} using the message below.`);
+          (document.getElementById('copy-text') as HTMLTextAreaElement).value = text; fallback.hidden = false;
+        } finally { send.disabled = false; send.textContent = 'Send enquiry'; }
+      } else {
+        (document.getElementById('copy-text') as HTMLTextAreaElement).value = text;
+        fallback.hidden = false;
+        show('info', `Opening your email app with the enquiry addressed to ${to}. If nothing opens, copy the message below.`);
+        location.href = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}`;
+      }
+    });
+
+    document.getElementById('copy')!.addEventListener('click', async () => {
+      const ta = document.getElementById('copy-text') as HTMLTextAreaElement;
+      try { await navigator.clipboard.writeText(ta.value); show('ok', 'Message copied.'); } catch { ta.select(); show('info', 'Press Ctrl+C to copy the selected message.'); }
+    });
+  </script>
+</Base>

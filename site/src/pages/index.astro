@@ -1,0 +1,178 @@
+---
+import Base from '../layouts/Base.astro';
+import { company, credentials, timeline } from '../data/company';
+import { categories, categoryIds, byCategory, catImage, catAccent, products } from '../data/catalog';
+import { u } from '../data/url';
+
+const orgLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Geo Excel',
+  legalName: company.legalName,
+  url: company.liveSite,
+  telephone: company.phone,
+  email: company.email,
+  address: { '@type': 'PostalAddress', streetAddress: '3C-918, 3rd Floor, 3rd Cross, 1st Block, HRBR Layout, Kalyan Nagar', addressLocality: 'Bangalore', postalCode: '560043', addressRegion: 'Karnataka', addressCountry: 'IN' },
+};
+const mosaic = (['rice', 'spices', 'iqf', 'oils'] as const).map((c) => ({ c, ...catImage[c], label: categories[c].name }));
+const sample = (c: (typeof categoryIds)[number]) => byCategory(c).slice(0, 3).map((p) => p.name).join(' · ');
+---
+<Base
+  title="Geo Excel | Rice, spices, frozen vegetables & edible oils exporter, Bangalore"
+  description="Geo Excel exports rice, whole spices, IQF frozen vegetables and edible oils from Bangalore, India. Browse specification sheets for 44 listed products and send one structured quote request."
+  jsonLd={orgLd}
+>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Export trade · Bangalore, India</p>
+        <h1>Indian rice, spices, frozen vegetables &amp; oils, <em>exported to order.</em></h1>
+        <p class="lede">
+          Geo Excel ({company.legalName}) facilitates international and domestic trade in food products.
+          Check the specifications of {products.length} listed products, add the ones you need, and send a single quote request.
+        </p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href={u('enquiry/')}>Request a quote</a>
+          <a class="btn" href={u('products/')}>Browse {products.length} products</a>
+        </div>
+      </div>
+      <div class="mosaic" role="group" aria-label="Product categories">
+        {mosaic.map((m) => (
+          <figure>
+            <img src={u(m.src)} alt={m.alt} width="300" height="420" loading={m.c === 'rice' ? 'eager' : 'lazy'} decoding="async" />
+            <figcaption>{m.label}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="facts" aria-label="Company registrations">
+    <div class="wrap">
+      <ul>
+        <li><b>Registered company</b><span>{company.legalName}, Bangalore</span></li>
+        <li><b>Exporter registrations</b><span>APEDA &amp; Council for Leather Exports RCMC · IEC · FSSAI central licence</span></li>
+        <li><b>Group heritage</b><span>Farming since the 1980s; export trade as Geo Excel from 2023</span></li>
+        <li><b>Scope shown plainly</b><span><a href={u('credentials/')} style="color:#fff">See what each registration covers →</a></span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="products">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">What we export</p>
+          <h2>Four product lines, each with a full specification sheet</h2>
+        </div>
+        <p>Packaging, origin region, moisture and HS code are listed for every product, so you can shortlist before you write to us.</p>
+      </div>
+      <div class="cats">
+        {categoryIds.map((c) => (
+          <a class="cat" href={u(`products/?c=${c}`)} style={`--accent:${catAccent[c]}`}>
+            <img src={u(catImage[c].src)} alt="" width="450" height="338" loading="lazy" decoding="async" />
+            <div class="cat-body">
+              <h3>{categories[c].name}</h3>
+              <p>{sample(c)}…</p>
+              <span class="cat-count">{byCategory(c).length} products →</span>
+            </div>
+          </a>
+        ))}
+        <div class="cat soft" style={`--accent:${catAccent.fashion}`}>
+          <img src={u(catImage.fashion.src)} alt="" width="450" height="338" loading="lazy" decoding="async" />
+          <div class="cat-body">
+            <h3>Fashion &amp; lifestyle</h3>
+            <p>Leather footwear is covered by the company’s Council for Leather Exports registration. Product details are available on request.</p>
+            <span class="tag">Details on request</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">How it works</p>
+          <h2>From specification to quote request in three steps</h2>
+        </div>
+      </div>
+      <ol class="steps">
+        <li><h3>Shortlist</h3><p>Open any product to see its specification sheet: pack sizes, region, moisture, HS code.</p></li>
+        <li><h3>Add to enquiry</h3><p>Press “Add to enquiry” on each product. Your list follows you across the site.</p></li>
+        <li><h3>Send one request</h3><p>Tell us your company, destination and volumes. Your selected products are filled in for you.</p></li>
+      </ol>
+      <h3 style="margin-top:36px">What helps us quote accurately</h3>
+      <ul class="checklist">
+        <li>Product and variety, grade or size</li>
+        <li>Pack size and packaging type</li>
+        <li>Approximate quantity per shipment</li>
+        <li>Destination country or port</li>
+        <li>Any documents you need from the exporter</li>
+        <li>Your company name and a reachable email</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="credentials">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Credentials</p>
+          <h2>Registrations you can read, not just scan</h2>
+        </div>
+        <p>These are the certificate copies the company publishes, with the scope and dates exactly as printed on each.</p>
+      </div>
+      <div class="creds">
+        {credentials.slice(0, 3).map((c) => (
+          <article class="cred">
+            <span class="tag">{c.short}</span>
+            <h3>{c.title}</h3>
+            <dl>
+              <dt>Issuer</dt><dd>{c.issuer}</dd>
+              <dt>Scope</dt><dd>{c.scope}</dd>
+              <dt>Valid to</dt><dd>{c.validTo}</dd>
+            </dl>
+            {c.note && <p class="flag">{c.note}</p>}
+          </article>
+        ))}
+      </div>
+      <p style="margin-top:24px"><a class="btn" href={u('credentials/')}>View all five registrations with copies</a></p>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Heritage</p>
+          <h2>Four decades from the farm to export trade</h2>
+        </div>
+        <p>“Geo Excel” is short for Geographic Excellence, officially brought to life in 2023.</p>
+      </div>
+      <ol class="timeline">
+        {timeline.map((t) => (
+          <li><span class="when">{t.when}</span><div><h3>{t.title}</h3><p>{t.text}</p></div></li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="band">
+        <div style="z-index:1">
+          <h2>Ready to price a shipment?</h2>
+          <p>Send the products, quantities and destination through the enquiry form, or write to {company.email}.</p>
+          <div class="cta-row"><a class="btn btn-accent" href={u('enquiry/')}>Request a quote</a></div>
+        </div>
+        <address>
+          <span>{company.addressLines.join(', ')}</span>
+          <a href={`tel:${company.phoneHref}`}>{company.phone}</a>
+          <a href={`mailto:${company.email}`}>{company.email}</a>
+        </address>
+      </div>
+    </div>
+  </section>
+</Base>

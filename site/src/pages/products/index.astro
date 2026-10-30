@@ -1,0 +1,86 @@
+---
+import Base from '../../layouts/Base.astro';
+import { categories, categoryIds, products, catAccent, cardSpecs } from '../../data/catalog';
+import { u } from '../../data/url';
+---
+<Base
+  title="Product catalogue | Rice, spices, IQF vegetables, edible oils"
+  description={`Specification sheets for ${products.length} products exported by Geo Excel: basmati and non-basmati rice, whole spices, IQF frozen vegetables, edible oils and ghee. Pack sizes, origin, moisture and HS codes.`}
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <p class="eyebrow">Catalogue</p>
+      <h1>{products.length} products, one enquiry</h1>
+      <p>Specifications are transcribed from Geo Excel’s current product listings. Add what you need and send a single quote request.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:8px">
+    <div class="wrap">
+      <div class="toolbar">
+        <div class="chips" role="group" aria-label="Filter by category">
+          <button class="chip" type="button" data-filter="all" aria-pressed="true">All <span class="mono">{products.length}</span></button>
+          {categoryIds.map((c) => (
+            <button class="chip" type="button" data-filter={c} aria-pressed="false" style={`--c:${catAccent[c]}`}>
+              <i aria-hidden="true"></i>{categories[c].name}
+            </button>
+          ))}
+        </div>
+        <div class="search">
+          <label class="sr-only" for="q">Search products</label>
+          <input id="q" type="search" placeholder="Search products or HS code" autocomplete="off" />
+        </div>
+      </div>
+      <p class="sr-only" role="status" aria-live="polite" id="result-count"></p>
+
+      <div class="grid" id="grid">
+        {products.map((p) => (
+          <article class="pcard" data-cat={p.category} data-text={`${p.name} ${Object.values(p.specs).join(' ')} ${categories[p.category].name}`.toLowerCase()} style={`--accent:${catAccent[p.category]}`}>
+            <span class="cat-label">{categories[p.category].name}</span>
+            <h3><a href={u(`products/${p.id}/`)}>{p.name}</a></h3>
+            <dl class="mini">
+              {cardSpecs(p).map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}
+            </dl>
+            <div class="actions">
+              <a class="btn btn-sm" href={u(`products/${p.id}/`)}>Spec sheet</a>
+              <button class="btn btn-sm btn-primary" type="button" data-add={p.id} aria-pressed="false"><span class="lbl">Add to enquiry</span></button>
+            </div>
+          </article>
+        ))}
+      </div>
+      <p class="empty" id="empty" hidden>No products match. Try another word, or <a href={u('enquiry/')}>tell us what you need</a>.</p>
+    </div>
+  </section>
+
+  <script>
+    const cards = [...document.querySelectorAll<HTMLElement>('.pcard')];
+    const chips = [...document.querySelectorAll<HTMLButtonElement>('[data-filter]')];
+    const q = document.getElementById('q') as HTMLInputElement;
+    const empty = document.getElementById('empty')!;
+    const status = document.getElementById('result-count')!;
+    let cat = new URLSearchParams(location.search).get('c') || 'all';
+    if (!chips.some((c) => c.dataset.filter === cat)) cat = 'all';
+
+    function apply() {
+      const term = q.value.trim().toLowerCase();
+      let n = 0;
+      cards.forEach((c) => {
+        const show = (cat === 'all' || c.dataset.cat === cat) && (!term || c.dataset.text!.includes(term));
+        c.hidden = !show;
+        if (show) n++;
+      });
+      chips.forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.filter === cat)));
+      empty.hidden = n > 0;
+      status.textContent = `${n} product${n === 1 ? '' : 's'} shown`;
+    }
+    chips.forEach((c) => c.addEventListener('click', () => {
+      cat = c.dataset.filter!;
+      const url = new URL(location.href);
+      cat === 'all' ? url.searchParams.delete('c') : url.searchParams.set('c', cat);
+      history.replaceState(null, '', url);
+      apply();
+    }));
+    q.addEventListener('input', apply);
+    apply();
+  </script>
+</Base>
