@@ -1,0 +1,6 @@
+# Minimal Supabase CLI config. Only what the repo needs; the hosted project has its own settings.
+project_id = "geoexcel"
+
+[functions.notify-quotation]
+# Called by the database with a shared secret (x-webhook-secret), not by browsers with a user JWT.
+verify_jwt = false

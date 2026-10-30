@@ -9,3 +9,5 @@ Geo_Excel_Website_Redesign_Assignment_Professional.pdf
 tools/dist-pages/
 supabase/.temp/
 supabase/.branches/
+!.env.example
+!site/.env.example
