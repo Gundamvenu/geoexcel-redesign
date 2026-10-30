@@ -113,7 +113,7 @@ npx supabase secrets set MAIL_FROM="Geo Excel <quotes@your-domain>" --project-re
 ```
 `SITE_URL` is already set (it is not secret). `SUPABASE_URL` and the service-role key are injected into the function by the platform; this project never reads or logs the service-role key.
 
-**Resend sandbox limitation.** Until you verify a sending domain at resend.com/domains, use the default sender `onboarding@resend.dev`. In that mode Resend only delivers to the email address of the Resend account owner, so the admin alert works if `ADMIN_NOTIFY_EMAIL` is that address, but customer confirmations to anyone else are rejected (recorded as a failure on the quotation). Set `MAIL_FROM` to an address on a verified domain to lift this.
+**Resend sandbox limitation.** Until you verify a sending domain at resend.com/domains, use the default sender `onboarding@resend.dev`. In that mode Resend only delivers to the email address of the Resend account owner, so the admin alert works only if `ADMIN_NOTIFY_EMAIL` is that address (currently `gundamvenutr@gmail.com`, the Resend account owner), but customer confirmations to anyone else are rejected (recorded as a failure on the quotation). Set `MAIL_FROM` to an address on a verified domain to lift this.
 
 ### Running things
 ```bash
@@ -170,7 +170,8 @@ Run against the live URL with Playwright (Chromium): `tools/check.mjs`, `flow.mj
 - `tools/e2e_backend.mjs` (Playwright, **local preview and the live URL, 1440 px and 390 px**): 62 assertions, 0 failures. Catalogue renders 44 live products from Supabase; error state with retry keeps the snapshot; empty state; spec table from jsonb; unknown product state; anon is refused on every private table over the REST API; invalid input is rejected with `invalid_input`; real submissions returned `GX-2026-0001` to `0006`; client validation, server-error fallback, rate-limit message; admin login page is noindex and refuses wrong credentials. Screenshots in `verify/` and `verify-local-backend/`.
 - The database webhook chain was verified end to end: a submission queued a `pg_net` request, the edge function answered 200 after checking the database secret, and recorded "email not configured" because the Resend secrets were not yet set.
 - Lighthouse on the live URL: `/products/` mobile 98 / 100 / 100 / 100, desktop 89 / 100 / 100 / 100 (CLS 0); `/enquiry/` mobile 98 / 100 / 100 / 100, desktop 96 / 100 / 100 / 100; `/admin/` performance 95-99, accessibility 100, SEO 50 **by design** (the page is `noindex`).
-- **Not yet verified:** admin sign-in and the admin screens (they need an admin account that you create; `e2e_backend.mjs` runs them when `E2E_ADMIN_EMAIL` and `E2E_ADMIN_PASSWORD` are set in your own terminal), non-admin blocking through the UI, and actual email delivery (needs the Resend secrets).
+- **Email delivery verified** with `tools/email_test.py` (one real submission through the public RPC): with `ADMIN_NOTIFY_EMAIL` set to an address that is not the Resend account owner, Resend rejected both emails with 403 (the documented sandbox rule) and the failure was recorded in `quotations.notify_error`, as designed (GX-2026-0007). With `ADMIN_NOTIFY_EMAIL` set to the Resend account's own address, the admin alert and the customer confirmation were both sent, `notified_at` was set and the function returned `{"sent":true,"problems":0}` (GX-2026-0008). Inbox contents were not inspected by this tool.
+- **Not yet verified:** admin sign-in and the admin screens (they need an admin account that you create; `e2e_backend.mjs` runs them when `E2E_ADMIN_EMAIL` and `E2E_ADMIN_PASSWORD` are set in your own terminal) and non-admin blocking through the UI.
 
 ## Known limitations
 
