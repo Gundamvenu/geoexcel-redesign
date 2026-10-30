@@ -59,7 +59,11 @@ Static output; deploys unchanged to Netlify, Vercel or GitHub Pages (free tiers)
 - **Netlify / Vercel:** root directory `site`, build command `npm run build`, output `dist`. Set `SITE_URL` to the assigned URL.
 - **GitHub Pages:** set `SITE_URL=https://<user>.github.io` and `BASE_PATH=/<repo>`, build, publish `site/dist`.
 
-Deployment status and the live URL are recorded at the bottom of this file once published.
+**Currently deployed (GitHub Pages, free tier):**
+- Live site: **https://gundamvenu.github.io/geoexcel-redesign/**
+- Source: https://github.com/Gundamvenu/geoexcel-redesign (`main`). The static build is published to the `gh-pages` branch.
+- Redeploy: `bash tools/deploy-pages.sh` (builds with `SITE_URL` and `BASE_PATH`, adds `.nojekyll`, force-pushes `gh-pages`). On Windows Git Bash the script sets `MSYS_NO_PATHCONV=1`; without it Git Bash rewrites `/geoexcel-redesign` into a Windows path and every link breaks.
+- The `PUBLIC_WEB3FORMS_KEY` is **not set** on this deployment, so the form uses the email fallback.
 
 ## Verification performed (local production build, 30 Oct 2026)
 
@@ -76,6 +80,13 @@ Deployment status and the live URL are recorded at the bottom of this file once 
 | **Redesign, desktop** | 98 | 100 | 100 | 100 | 0.9 s | 0 |
 
 Catalogue page (`/products/`, 44 product photos): mobile 90-98 performance, accessibility 100, best practices 100, SEO 100; desktop performance 76-90 (varies run to run with CPU load; LCP about 2.0 s). Raw JSON in `audit/lighthouse/`. Lighthouse is a lab test with simulated throttling; real-user numbers will differ. Automated accessibility scores do not replace a manual screen-reader pass (not done).
+
+### Deployed-URL verification (30 Oct 2026, `verify/`)
+Run against the live URL with Playwright (Chromium): `tools/check.mjs`, `flow.mjs`, `adder.mjs`.
+- 8 page types at 1440 px and 390 px: HTTP 200 (the deliberate 404 page returns 404), one `<h1>`, no missing `alt`, no horizontal overflow, no console errors or failed requests. Screenshots in `verify/`.
+- `flow.mjs`: 44 assertions, 0 failures. `adder.mjs`: 38 assertions, 0 failures. All homepage internal links resolve.
+- `sitemap-index.xml` (50 URLs), `robots.txt`, `og.png`, favicon, product photos and certificate images all return 200 with the right content type.
+- Lighthouse, live home: mobile 100/100/100/100, desktop 92/100/100/100 (performance/accessibility/best practices/SEO), LCP 1.0-1.1 s, CLS 0 (`audit/lighthouse/redesign-live-home.json`).
 
 ## Known limitations
 
