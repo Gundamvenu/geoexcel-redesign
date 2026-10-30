@@ -13,10 +13,10 @@ and the evidence in [`audit/FINDINGS.md`](./audit/FINDINGS.md).
 | Page | Purpose |
 |---|---|
 | `/` | States what Geo Excel exports, to whom, from where; registrations strip; product lines; 3-step enquiry flow; credentials; heritage; contact CTA |
-| `/products/` | 44-product catalogue, category filter, search (name, spec values, HS code), "Add to enquiry" |
-| `/products/<id>/` (44 pages) | Specification sheet per product, "Add to enquiry" and "Quote this product now", related products, `Product` JSON-LD |
+| `/products/` | 44-product catalogue with a photo per product, category filter (kept in the URL), search (name, spec values, HS code), "Add to enquiry" |
+| `/products/<id>/` (44 pages) | Product photo, specification sheet, "Add to enquiry" and "Quote this product now", "Back to <category>" and "All products" buttons, related products, `Product` JSON-LD |
 | `/credentials/` | Each registration in plain text (issuer, scope, issued, valid to) next to the published certificate copy |
-| `/enquiry/` | Structured quote request; pre-filled with the products the visitor selected; validation; Web3Forms or email fallback |
+| `/enquiry/` | Structured quote request. Each selected product shows its own key facts (variety, region, HS code...) and its own choices (pack size, packaging, size, grade or form, quantity) taken from that product's specification; the message sent lists them per product. Validation; Web3Forms or email fallback |
 | `/about/`, `/sustainability/` | The company's own published text, restructured |
 | `/404`, `sitemap-index.xml`, `robots.txt`, favicon, OG image, canonical + OG/Twitter tags | |
 
@@ -64,7 +64,7 @@ Deployment status and the live URL are recorded at the bottom of this file once 
 ## Verification performed (local production build, 30 Oct 2026)
 
 - `tools/check.mjs`: 8 page types at 1440 px and 390 px: HTTP status, one `<h1>`, no missing `alt`, **no horizontal overflow**, no console errors or failed requests.
-- `tools/flow.mjs`: 38 assertions on both viewports: catalogue filter/search/HS-code search, add/remove, header counter, pre-fill via "Quote this product now", validation and focus, email fallback text, Web3Forms path (network mocked), 404, all homepage internal links resolve. **0 failures.**
+- `tools/flow.mjs`: 44 assertions (22 per viewport): catalogue filter/search/HS-code search, all 44 product images load, Home link, add/remove, header counter, per-product option sets differ (rice vs spice), per-product pick and quantity appear in the message, pre-fill via "Quote this product now", back link keeps the category, validation and focus, email fallback text, Web3Forms path (network mocked), 404, all homepage internal links resolve. **0 failures.**
 - Lighthouse (local preview), home page:
 
 | | Performance | Accessibility | Best practices | SEO | LCP | CLS |
@@ -74,7 +74,7 @@ Deployment status and the live URL are recorded at the bottom of this file once 
 | **Redesign, mobile** | 100 | 100 | 100 | 100 | 1.0 s | 0 |
 | **Redesign, desktop** | 98 | 100 | 100 | 100 | 0.9 s | 0 |
 
-Raw JSON in `audit/lighthouse/`. Lighthouse is a lab test with simulated throttling; real-user numbers will differ. Automated accessibility scores do not replace a manual screen-reader pass (not done).
+Catalogue page (`/products/`, 44 product photos): mobile 90-98 performance, accessibility 100, best practices 100, SEO 100; desktop performance 76-90 (varies run to run with CPU load; LCP about 2.0 s). Raw JSON in `audit/lighthouse/`. Lighthouse is a lab test with simulated throttling; real-user numbers will differ. Automated accessibility scores do not replace a manual screen-reader pass (not done).
 
 ## Known limitations
 
@@ -92,7 +92,7 @@ Everything below is clearly marked in the UI or code and must be replaced or con
 1. **Certificate validity.** The published FSSAI copy prints validity to **20 Feb 2025**; the Council for Leather Exports copy prints **31 Mar 2024**. Both are shown as printed with an on-page "replace with current copy (placeholder)" note. (`site/src/data/company.ts`)
 2. **Udyam and IEC dates** are shown as "See copy" because they were not reliably legible.
 3. **Fashion & lifestyle** has no product data on the live site; shown as "Details on request" with no products. Leather footwear is mentioned only because the Council for Leather Exports certificate names it.
-4. **Photography.** Category images (rice, spices, IQF, oils, leather bags) and the logo mark are reused from the live site. Confirm rights or replace with owned photography. The logo was re-cropped (mark only) and the wordmark is set in live text.
+4. **Photography.** The 44 product photos, the 5 category images and the logo mark are reused from the live site, paired with products by their position on the live product pages (`tools/product_images.json`, `tools/build_images.py`). Several rice photos are near-identical generic grain shots, and one file is used for two products (PR 11 and 1509 Steam) because the source does so. Confirm rights or replace with owned photography. The logo was re-cropped (mark only) and the wordmark is set in live text.
 5. **Web3Forms key**: not set (see above).
 6. **`SITE_URL`** default is a placeholder until deployed.
 7. **OG image** (`site/public/og.png`) is generated from `tools/og.html`; replace with brand artwork if available.
@@ -116,12 +116,12 @@ site/                Astro project (the website)
   src/pages/         routes
   src/data/          company facts, credentials, catalogue (catalog.json is generated)
 audit/               Phase 1 evidence: FINDINGS.md, pages.md, crawl.json, content/, screenshots/, lighthouse/
-tools/               crawl.mjs, lh.mjs, check.mjs, flow.mjs, parse_catalog.py, build_catalog.py, og.html
+tools/               crawl.mjs, lh.mjs, check.mjs, flow.mjs, parse_catalog.py, build_catalog.py, build_images.py, og.html
 verify-local/        screenshots of the redesign from the local build (deployed-URL checks go in verify/)
 PROBLEM_SOLUTION.md  problem note (+ PDF)
 ```
 
-Regenerate the catalogue from the crawl: `python tools/parse_catalog.py && python tools/build_catalog.py`.
+Regenerate the catalogue and photos from the crawl: `python tools/parse_catalog.py && python tools/build_catalog.py && python tools/build_images.py` (needs Pillow).
 Re-run the audit: `cd tools && npm i && npx playwright install chromium && node crawl.mjs`.
 
 ## Sources

@@ -17,8 +17,8 @@ Full ranked list of 12 findings: `audit/FINDINGS.md`. Benchmarks (LT Foods, Kohi
 ## How the redesign addresses it
 1. **State the offer** in the first screen: "Indian rice, spices, frozen vegetables & oils, exported to order", with the registered company name and two actions: *Request a quote* and *Browse 44 products*.
 2. **Make proof readable and honest.** A registrations strip and a Credentials page give issuer, scope, issued and valid-to dates as printed, beside each certificate copy. Expired-looking dates are flagged, not hidden. No clients, numbers or testimonials are invented.
-3. **Turn the catalogue into a quote tool.** 44 spec-sheet pages (pack size, origin, moisture, HS code) with filter and search; every product has *Add to enquiry* and *Quote this product now*; the header shows the count.
-4. **A structured enquiry form** that arrives pre-filled with the selected products and asks for company, destination and quantity. It uses Web3Forms when a key is set and otherwise opens a pre-addressed email.
+3. **Turn the catalogue into a quote tool.** 44 spec-sheet pages with a photo, filter and search; every product has *Add to enquiry* and *Quote this product now*; the header shows the count, and Home / back-to-category links keep navigation easy.
+4. **A structured enquiry form** that arrives pre-filled with the selected products. Each product carries its own spec choices (pack size, packaging, size or grade, quantity), and the form asks for company and destination. It uses Web3Forms when a key is set and otherwise opens a pre-addressed email.
 5. **Remove the amplifiers:** responsive from 390 px, indexable, with unique titles and descriptions, one H1 per page, sitemap, canonical and OG tags. Local Lighthouse: mobile 100/100/100/100 (performance/accessibility/best practices/SEO), LCP 1.0 s, versus 25/100/77/54 and 17.2 s on the live site.
 
 ## How success would be measured
