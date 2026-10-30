@@ -18,19 +18,20 @@ Full ranked list of 12 findings: `audit/FINDINGS.md`. Benchmarks (LT Foods, Kohi
 1. **State the offer** in the first screen: "Indian rice, spices, frozen vegetables & oils, exported to order", with the registered company name and two actions: *Request a quote* and *Browse 44 products*.
 2. **Make proof readable and honest.** A registrations strip and a Credentials page give issuer, scope, issued and valid-to dates as printed, beside each certificate copy. Expired-looking dates are flagged, not hidden. No clients, numbers or testimonials are invented.
 3. **Turn the catalogue into a quote tool.** 44 spec-sheet pages with a photo, filter and search; every product has *Add to enquiry* and *Quote this product now*; the header shows the count, and Home / back-to-category links keep navigation easy.
-4. **A structured enquiry form** that arrives pre-filled with the selected products. Each product carries its own spec choices (pack size, packaging, size or grade, quantity), and the form asks for company and destination. It uses Web3Forms when a key is set and otherwise opens a pre-addressed email.
+4. **A structured enquiry that is captured, not just emailed.** The form arrives pre-filled with the selected products, each with its own spec choices, and saves a customer, a numbered quotation (e.g. GX-2026-0001) and its items in a Supabase database. The visitor gets the reference; the team gets a private **admin inbox** (and an email alert once the mail secrets are set) (status: new, in review, quoted, won, lost, closed; internal notes; customer history), so no enquiry depends on someone's mailbox and every one can be followed up and counted.
 5. **Remove the amplifiers:** responsive from 390 px, indexable, with unique titles and descriptions, one H1 per page, sitemap, canonical and OG tags. Local Lighthouse: mobile 100/100/100/100 (performance/accessibility/best practices/SEO), LCP 1.0 s, versus 25/100/77/54 and 17.2 s on the live site.
 
 ## How success would be measured
 Baselines do not exist (no analytics access), so the first step is to instrument the current site for 2-4 weeks.
-- **Primary:** qualified enquiries per 100 visits (form or email sent with company, destination and at least one product).
+- **Primary:** qualified enquiries per 100 visits (a stored quotation with company, destination and at least one product).
+- **Follow-up (now measurable from the admin data):** share of quotations moved past "new" within a working day, quoted-to-won rate, enquiries per product line.
 - **Funnel:** share of product views that add to enquiry; share of enquiry-page views that submit; share of enquiries naming a product and quantity.
 - **Reach:** indexed pages and non-branded impressions in Search Console; mobile share of sessions and mobile conversion rate.
 - **Quality:** enquiries that need no follow-up question, and enquiries per product line.
 - **Guardrails:** Lighthouse mobile ≥ 90, zero broken links in CI.
 
 ## What I would do next
-1. Replace placeholders with real data: current certificates, a Web3Forms (or CRM) endpoint owned by Geo Excel, owned photography.
+1. Replace placeholders with real data: current certificates, verified product specifications (the catalogue is SAMPLE until then), owned photography, and set the email secrets so alerts reach the right inbox from a verified domain.
 2. Have the company correct the product data errors listed in the README, and confirm which products each registration actually covers.
 3. Add analytics (privacy-friendly) and Search Console; verify the `noindex` flag was unintended before any launch on the live domain.
 4. Add only what the company can document: markets served, sample/lead-time policy, packing and documentation list, named references with permission.
