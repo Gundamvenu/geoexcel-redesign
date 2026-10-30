@@ -24,9 +24,25 @@ const info = Object.fromEntries(products.map((p) => [p.id, { name: p.name, cat: 
   <section class="section" style="padding-top:8px">
     <div class="wrap form-wrap">
       <form class="enquiry" id="enquiry" novalidate data-key={accessKey} data-email={company.email} data-info={JSON.stringify(info)} data-products={u('products/')}>
-        <div class="basket" id="basket" aria-live="polite">
+        <div class="basket" id="basket">
           <strong>Products in this enquiry <span class="count" data-count>0</span></strong>
           <p class="muted" style="margin:4px 0 0;font-size:.9rem">Each product has its own pack size, packaging and quantity, taken from its specification.</p>
+          <div class="adder">
+            <label for="add-filter"><strong>Add another product</strong></label>
+            <div class="adder-row">
+              <input id="add-filter" type="search" placeholder="Filter, e.g. cumin" autocomplete="off" aria-controls="add-select" />
+              <select id="add-select" aria-label="Choose a product to add"></select>
+              <button type="button" class="btn btn-sm btn-primary" id="add-btn">+ Add to quote</button>
+            </div>
+            <details class="custom">
+              <summary>Product not in the list?</summary>
+              <div class="adder-row">
+                <input id="add-custom" type="text" placeholder="Product name" autocomplete="off" aria-label="Name of a product that is not listed" />
+                <button type="button" class="btn btn-sm" id="add-custom-btn">+ Add</button>
+              </div>
+            </details>
+            <p class="sr-only" id="add-status" role="status" aria-live="polite"></p>
+          </div>
           <ul id="basket-list"></ul>
           <p class="muted" id="basket-empty" style="margin:8px 0 0;font-size:.95rem">None yet. <a href={u('products/')}>Browse the catalogue</a> or describe what you need in the message.</p>
         </div>
@@ -107,6 +123,12 @@ const info = Object.fromEntries(products.map((p) => [p.id, { name: p.name, cat: 
     const loadD = (): Record<string, Record<string, string>> => { try { return JSON.parse(localStorage.getItem(DKEY) || '{}'); } catch { return {}; } };
     let details = loadD();
     const saveD = () => { try { localStorage.setItem(DKEY, JSON.stringify(details)); } catch { /* storage blocked */ } };
+    // Products typed in by the visitor that are not in the catalogue.
+    type Custom = { id: string; name: string; qty: string; notes: string };
+    const CKEY = 'geoexcel-enquiry-custom';
+    let customs: Custom[] = [];
+    try { customs = JSON.parse(localStorage.getItem(CKEY) || '[]'); } catch { customs = []; }
+    const saveC = () => { try { localStorage.setItem(CKEY, JSON.stringify(customs)); } catch { /* storage blocked */ } };
     const status = document.getElementById('status')!;
     const fallback = document.getElementById('fallback')!;
     const list = document.getElementById('basket-list')!;
@@ -156,8 +178,77 @@ const info = Object.fromEntries(products.map((p) => [p.id, { name: p.name, cat: 
         li.append(fields);
         return li;
       }));
-      emptyMsg.hidden = ids.length > 0;
+      list.append(...customs.map(customLine));
+      emptyMsg.hidden = ids.length + customs.length > 0;
+      fillPicker();
     }
+
+    function customLine(c: Custom) {
+      const li = document.createElement('li'); li.className = 'line'; li.dataset.id = c.id;
+      const head = document.createElement('div'); head.className = 'line-head';
+      const title = document.createElement('div');
+      const strong = document.createElement('strong'); strong.textContent = c.name;
+      const cat = document.createElement('div'); cat.className = 'muted'; cat.style.fontSize = '.8rem'; cat.textContent = 'Not in catalogue';
+      title.append(strong, cat);
+      const b = document.createElement('button'); b.type = 'button'; b.textContent = '×'; b.setAttribute('aria-label', `Remove ${c.name}`);
+      b.addEventListener('click', () => { customs = customs.filter((x) => x.id !== c.id); saveC(); drawBasket(); });
+      head.append(title, b);
+      const fields = document.createElement('div'); fields.className = 'line-fields';
+      const mk = (key: 'qty' | 'notes', label: string, ph: string) => {
+        const wrap = document.createElement('div'); const lab = document.createElement('label'); lab.textContent = label;
+        const inp = document.createElement('input'); inp.type = 'text'; inp.placeholder = ph; inp.value = c[key]; inp.id = `f-${c.id}-${key}`; lab.htmlFor = inp.id;
+        inp.addEventListener('input', () => { c[key] = inp.value; saveC(); });
+        wrap.append(lab, inp); fields.append(wrap);
+      };
+      mk('qty', 'Quantity', 'e.g. 25 MT'); mk('notes', 'Specification / notes', 'grade, pack size...');
+      li.append(head, fields);
+      return li;
+    }
+
+    // ---- "Add another product" picker ----
+    const filterEl = document.getElementById('add-filter') as HTMLInputElement;
+    const selectEl = document.getElementById('add-select') as HTMLSelectElement;
+    const addStatus = document.getElementById('add-status')!;
+    function fillPicker() {
+      const have = new Set(getBasket());
+      const term = filterEl.value.trim().toLowerCase();
+      const groups = new Map<string, HTMLOptGroupElement>();
+      selectEl.replaceChildren();
+      let n = 0;
+      Object.entries(info).forEach(([id, it]) => {
+        if (have.has(id) || (term && !(it.name + ' ' + it.cat).toLowerCase().includes(term))) return;
+        let g = groups.get(it.cat);
+        if (!g) { g = document.createElement('optgroup'); g.label = it.cat; groups.set(it.cat, g); selectEl.append(g); }
+        g.append(new Option(it.name, id)); n++;
+      });
+      if (!n) selectEl.append(new Option(term ? 'No matching product' : 'All products added', ''));
+      selectEl.disabled = n === 0;
+    }
+    filterEl.addEventListener('input', fillPicker);
+    function focusLine(id: string) {
+      const li = list.querySelector<HTMLElement>(`li[data-id="${CSS.escape(id)}"]`);
+      li?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      li?.querySelector<HTMLElement>('select, input')?.focus({ preventScroll: true });
+    }
+    document.getElementById('add-btn')!.addEventListener('click', () => {
+      const id = selectEl.value;
+      if (!id || !info[id]) { addStatus.textContent = 'Choose a product to add.'; filterEl.focus(); return; }
+      add(id); // triggers basket:change, which redraws the lines
+      addStatus.textContent = `${info[id].name} added to your quote.`;
+      filterEl.value = ''; fillPicker(); focusLine(id);
+    });
+    const customInput = document.getElementById('add-custom') as HTMLInputElement;
+    function addCustom() {
+      const name = customInput.value.trim();
+      if (!name) { addStatus.textContent = 'Type a product name first.'; customInput.focus(); return; }
+      const c = { id: `c${Date.now()}`, name: name.slice(0, 80), qty: '', notes: '' };
+      customs.push(c); saveC(); customInput.value = ''; drawBasket();
+      addStatus.textContent = `${c.name} added to your quote.`; focusLine(c.id);
+    }
+    document.getElementById('add-custom-btn')!.addEventListener('click', addCustom);
+    customInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); addCustom(); } });
+    filterEl.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); (document.getElementById('add-btn') as HTMLButtonElement).click(); } });
+
     document.addEventListener('basket:change', drawBasket);
     drawBasket();
 
@@ -196,13 +287,18 @@ const info = Object.fromEntries(products.map((p) => [p.id, { name: p.name, cat: 
       lines.push(`Destination: ${v('country')}`);
       if (v('qty')) lines.push(`Quantity: ${v('qty')}`);
       lines.push('', 'Products:');
-      if (!ids.length) lines.push('- (none selected)');
+      if (!ids.length && !customs.length) lines.push('- (none selected)');
       ids.forEach((id) => {
         const it = info[id]; const d = details[id] || {};
         const hs = it.facts.find(([k]) => k === 'HS code');
         lines.push(`- ${it.name}${hs ? ` (HS ${hs[1]})` : ''}`);
         const picks = it.options.filter((o) => d[o.key]).map((o) => `${o.label}: ${d[o.key]}`);
         if (d.qty?.trim()) picks.push(`Quantity: ${d.qty.trim()}`);
+        if (picks.length) lines.push(`    ${picks.join(' | ')}`);
+      });
+      customs.forEach((c) => {
+        lines.push(`- ${c.name} (not in catalogue)`);
+        const picks = [c.qty.trim() && `Quantity: ${c.qty.trim()}`, c.notes.trim() && `Notes: ${c.notes.trim()}`].filter(Boolean);
         if (picks.length) lines.push(`    ${picks.join(' | ')}`);
       });
       if (v('message')) lines.push('', 'Message:', v('message'));
@@ -234,7 +330,7 @@ const info = Object.fromEntries(products.map((p) => [p.id, { name: p.name, cat: 
           const data = await res.json();
           if (!res.ok || !data.success) throw new Error(data.message || 'Send failed');
           show('ok', 'Thank you. Your enquiry has been sent.');
-          clear(); details = {}; saveD(); form.reset(); fallback.hidden = true;
+          clear(); details = {}; saveD(); customs = []; saveC(); drawBasket(); form.reset(); fallback.hidden = true;
         } catch {
           show('bad', `We could not send the enquiry from this page. Please email ${to} using the message below.`);
           (document.getElementById('copy-text') as HTMLTextAreaElement).value = text; fallback.hidden = false;

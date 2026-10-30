@@ -16,7 +16,7 @@ and the evidence in [`audit/FINDINGS.md`](./audit/FINDINGS.md).
 | `/products/` | 44-product catalogue with a photo per product, category filter (kept in the URL), search (name, spec values, HS code), "Add to enquiry" |
 | `/products/<id>/` (44 pages) | Product photo, specification sheet, "Add to enquiry" and "Quote this product now", "Back to <category>" and "All products" buttons, related products, `Product` JSON-LD |
 | `/credentials/` | Each registration in plain text (issuer, scope, issued, valid to) next to the published certificate copy |
-| `/enquiry/` | Structured quote request. Each selected product shows its own key facts (variety, region, HS code...) and its own choices (pack size, packaging, size, grade or form, quantity) taken from that product's specification; the message sent lists them per product. Validation; Web3Forms or email fallback |
+| `/enquiry/` | Structured quote request. Each selected product shows its own key facts (variety, region, HS code...) and its own choices (pack size, packaging, size, grade or form, quantity) taken from that product's specification; the message sent lists them per product. Products can be added on this page itself (filter + picker over all 44, or a free-text line for a product that is not listed). Validation; Web3Forms or email fallback |
 | `/about/`, `/sustainability/` | The company's own published text, restructured |
 | `/404`, `sitemap-index.xml`, `robots.txt`, favicon, OG image, canonical + OG/Twitter tags | |
 
@@ -65,6 +65,7 @@ Deployment status and the live URL are recorded at the bottom of this file once 
 
 - `tools/check.mjs`: 8 page types at 1440 px and 390 px: HTTP status, one `<h1>`, no missing `alt`, **no horizontal overflow**, no console errors or failed requests.
 - `tools/flow.mjs`: 44 assertions (22 per viewport): catalogue filter/search/HS-code search, all 44 product images load, Home link, add/remove, header counter, per-product option sets differ (rice vs spice), per-product pick and quantity appear in the message, pre-fill via "Quote this product now", back link keeps the category, validation and focus, email fallback text, Web3Forms path (network mocked), 404, all homepage internal links resolve. **0 failures.**
+- `tools/adder.mjs`: 38 assertions (19 per viewport) for the quote-page "Add another product" control: filter, grouped picker, add listed and custom products, focus, persistence across reload, quantities and notes in the message, removal returning the product to the picker. **0 failures.**
 - Lighthouse (local preview), home page:
 
 | | Performance | Accessibility | Best practices | SEO | LCP | CLS |
@@ -116,7 +117,7 @@ site/                Astro project (the website)
   src/pages/         routes
   src/data/          company facts, credentials, catalogue (catalog.json is generated)
 audit/               Phase 1 evidence: FINDINGS.md, pages.md, crawl.json, content/, screenshots/, lighthouse/
-tools/               crawl.mjs, lh.mjs, check.mjs, flow.mjs, parse_catalog.py, build_catalog.py, build_images.py, og.html
+tools/               crawl.mjs, lh.mjs, check.mjs, flow.mjs, parse_catalog.py, build_catalog.py, build_images.py, adder.mjs, og.html
 verify-local/        screenshots of the redesign from the local build (deployed-URL checks go in verify/)
 PROBLEM_SOLUTION.md  problem note (+ PDF)
 ```

@@ -215,7 +215,7 @@ form.enquiry { background: var(--card); border: 1px solid var(--line); border-ra
 .field label, .field .label { font-weight: 600; font-size: .95rem; }
 .field .req { color: var(--red); }
 .field .hint { font-size: .86rem; color: var(--muted); font-weight: 400; }
-input[type='text'], input[type='email'], input[type='tel'], textarea, select { width: 100%; min-height: 48px; padding: 11px 14px; border: 1.5px solid #8b8470; border-radius: 10px; background: #fff; font: 400 1rem var(--sans); color: var(--ink); }
+input[type='text'], input[type='email'], input[type='tel'], input[type='search'], textarea, select { width: 100%; min-height: 48px; padding: 11px 14px; border: 1.5px solid #8b8470; border-radius: 10px; background: #fff; font: 400 1rem var(--sans); color: var(--ink); }
 textarea { min-height: 130px; resize: vertical; }
 input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 3px solid var(--focus); outline-offset: 1px; }
 input[aria-invalid='true'], textarea[aria-invalid='true'] { border-color: var(--red); background: #fff6f6; }
@@ -289,3 +289,14 @@ input[aria-invalid='true'], textarea[aria-invalid='true'] { border-color: var(--
 .pcard h2.ptitle a { text-decoration: none; }
 .pcard h2.ptitle a:hover { text-decoration: underline; }
 .brand > span { display: block; }
+
+
+/* Add-another-product picker on the quote page */
+.adder { margin: 14px 0 6px; padding: 12px; background: var(--card); border: 1px solid var(--line); border-radius: 10px; }
+.adder-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.adder-row input[type='search'], .adder-row input[type='text'] { flex: 1 1 140px; min-width: 0; }
+.adder-row select { flex: 2 1 220px; min-width: 0; }
+.adder-row .btn { flex: 0 0 auto; }
+.adder .custom { margin-top: 10px; }
+.adder .custom summary { cursor: pointer; font-weight: 600; font-size: .92rem; min-height: 44px; display: flex; align-items: center; color: var(--ink-2); }
+@media (max-width: 520px) { .adder-row .btn { flex: 1 1 100%; } }
