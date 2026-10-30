@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://gundamvenu.github.io/geoexcel-redesign/sitemap-index.xml
