@@ -75,12 +75,14 @@ for cat, items in raw.items():
         details=' '.join(keep)
         ordered={k:specs[k] for k in ORDER if k in specs}
         ordered.update({k:v for k,v in specs.items() if k not in ordered})
-        out.append({'id':slug(fix(it['name'])),'category':cat,'name':title(it['name']),'about':details,'specs':ordered,'note':note})
+        out.append({'id':slug(fix(it['name'])),'_src':[cat,i],'category':cat,'name':title(it['name']),'about':details,'specs':ordered,'note':note})
 # ensure unique ids
 seen={}
 for p in out:
     if p['id'] in seen: seen[p['id']]+=1; p['id']+=f"-{seen[p['id']]}"
     else: seen[p['id']]=1
+for p in out:
+    p['image']=f"img/products/{p['id']}.webp"
 json.dump({'categories':CATS,'products':out}, io.open('site/src/data/catalog.json','w',encoding='utf8'), indent=1, ensure_ascii=False)
 io.open('tools/catalog_flags.txt','w',encoding='utf8').write('\n'.join(flags))
 print(len(out),'products'); print('\n'.join(flags))

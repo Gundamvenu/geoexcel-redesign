@@ -20,6 +20,10 @@
  "products": [
   {
    "id": "1121-basmati-steam-rice",
+   "_src": [
+    "rice",
+    0
+   ],
    "category": "rice",
    "name": "1121 Basmati Steam Rice",
    "about": "Basmati 1121 Steam Rice is widely consumed across the world to prepare several types of cuisines.",
@@ -38,10 +42,15 @@
     "Speciality": "No Artificial Flavour, No Preservatives",
     "HS code": "10063020"
    },
-   "note": "Premium Quality Extra Long Grain 1121 Basmati Steam Rice, 100% sortexed pure quality with average grain length 8.35 mm, broken under 0.25%, moisture 12% deliver best cooking results."
+   "note": "Premium Quality Extra Long Grain 1121 Basmati Steam Rice, 100% sortexed pure quality with average grain length 8.35 mm, broken under 0.25%, moisture 12% deliver best cooking results.",
+   "image": "img/products/1121-basmati-steam-rice.webp"
   },
   {
    "id": "1121-basmati-sella-rice",
+   "_src": [
+    "rice",
+    1
+   ],
    "category": "rice",
    "name": "1121 Basmati Sella Rice",
    "about": "Basmati 1121 Sella Rice is widely consumed across the world to prepare several types of cuisines.",
@@ -60,10 +69,15 @@
     "Speciality": "No Artificial Flavour, No Preservatives",
     "HS code": "10063020"
    },
-   "note": "We are offering high quality 1121 Basmati Sella Rice from India. Specification: Average length: Above 8.35 mm, Broken: under 0.25%, Color: No added coloring matter, Paddy Grains: NIL, Moisture: 13.5.0% maximum, Sortex Clean quality free from any foreign material, live or dead weevils, stone etc."
+   "note": "We are offering high quality 1121 Basmati Sella Rice from India. Specification: Average length: Above 8.35 mm, Broken: under 0.25%, Color: No added coloring matter, Paddy Grains: NIL, Moisture: 13.5.0% maximum, Sortex Clean quality free from any foreign material, live or dead weevils, stone etc.",
+   "image": "img/products/1121-basmati-sella-rice.webp"
   },
   {
    "id": "1121-basmati-goldeni-sella-rice",
+   "_src": [
+    "rice",
+    2
+   ],
    "category": "rice",
    "name": "1121 Basmati Goldeni Sella Rice",
    "about": "Golden Sella 1121 Basmati Rice is highly appreciated due to its long grains, rich aroma and splendid taste. This rice is used for preparing several cuisines such as Biryani, Pulao, Fried Rice, etc.",
@@ -82,10 +96,15 @@
     "Speciality": "No Artificial Flavour, No Preservatives",
     "HS code": "10063020"
    },
-   "note": "India, AGL: 8.35 mm, Moisture: 13% max., Broken: 0.5%, Foreign Matter: 0.25% (maximum), Goldenness: 38-40 KETT, Paddy Grains: Nil, Red Streak: Nil, Color: dark Golden, Grain: Long, thin and slender."
+   "note": "India, AGL: 8.35 mm, Moisture: 13% max., Broken: 0.5%, Foreign Matter: 0.25% (maximum), Goldenness: 38-40 KETT, Paddy Grains: Nil, Red Streak: Nil, Color: dark Golden, Grain: Long, thin and slender.",
+   "image": "img/products/1121-basmati-goldeni-sella-rice.webp"
   },
   {
    "id": "1401-pusa-basmati-steam-rice",
+   "_src": [
+    "rice",
+    3
+   ],
    "category": "rice",
    "name": "1401 Pusa Basmati Steam Rice",
    "about": "Pusa 1401 Basmati Steam Rice Polished Sortex Rice of current year. Also available in Parboiled (sella) rice. Pusa 1401 Basmati Steam Rice",
@@ -104,10 +123,15 @@
     "Speciality": "Pure 1401 Basmati rice.",
     "HS code": "10063020"
    },
-   "note": "Moisture: 12% max., Avg. length before cooking: 7.8 mm, Broken : Nil, Length to Breadth Ratio : 4.5 or above, Damaged & Discoloured Grains: Nil,Paddy Grain: Nil, Black grains: Nil, Origin: India,Aroma : Contains marked degree of natural aroma both in raw and cooked state,Sortex clean quality, free from any foreign material and live or dead weevils, stones etc."
+   "note": "Moisture: 12% max., Avg. length before cooking: 7.8 mm, Broken : Nil, Length to Breadth Ratio : 4.5 or above, Damaged & Discoloured Grains: Nil,Paddy Grain: Nil, Black grains: Nil, Origin: India,Aroma : Contains marked degree of natural aroma both in raw and cooked state,Sortex clean quality, free from any foreign material and live or dead weevils, stones etc.",
+   "image": "img/products/1401-pusa-basmati-steam-rice.webp"
   },
   {
    "id": "pr-11-steam-long-grain-rice",
+   "_src": [
+    "rice",
+    5
+   ],
    "category": "rice",
    "name": "PR 11 Steam Long Grain Rice",
    "about": "Non Basmati Rice",
@@ -124,10 +148,15 @@
     "Packaging type": "Plastic Sack Bag, Jute Bag, PP Bag, Plastic Bag",
     "HS code": "10063020"
    },
-   "note": "Best Quality PR-11 Steam long Grain rice, AGL 6.85 mm, Broken under 1%. Moisture 12%, sortexed quality. Beat Quality PR-11 Rice also Known as Biryani Rice"
+   "note": "Best Quality PR-11 Steam long Grain rice, AGL 6.85 mm, Broken under 1%. Moisture 12%, sortexed quality. Beat Quality PR-11 Rice also Known as Biryani Rice",
+   "image": "img/products/pr-11-steam-long-grain-rice.webp"
   },
   {
    "id": "1509-basmati-sella-rice",
+   "_src": [
+    "rice",
+    6
+   ],
    "category": "rice",
    "name": "1509 Basmati Sella Rice",
    "about": "We supply 1509 Basmati sella rice, best premium quality of Punjab having XXXL grain with best cooking.",
@@ -145,10 +174,15 @@
     "Speciality": "Pure 1509 Basmati rice.",
     "HS code": "10063020"
    },
-   "note": "Average grain length- 8.4 mm Broken: under 0.5% Moisture: 11%, Free from any impurities"
+   "note": "Average grain length- 8.4 mm Broken: under 0.5% Moisture: 11%, Free from any impurities",
+   "image": "img/products/1509-basmati-sella-rice.webp"
   },
   {
    "id": "ir-64-rice",
+   "_src": [
+    "rice",
+    7
+   ],
    "category": "rice",
    "name": "IR 64 Rice",
    "about": "Par Boiled Rice",
@@ -166,10 +200,15 @@
     "Speciality": "Parboiled",
     "HS code": "10063020"
    },
-   "note": "IR 64 Sella/Parboiled Rice having average grain length 5.9 mm, broken under 5%, moisture under 14%, 100% sortexed premium quality deliver good cooking result."
+   "note": "IR 64 Sella/Parboiled Rice having average grain length 5.9 mm, broken under 5%, moisture under 14%, 100% sortexed premium quality deliver good cooking result.",
+   "image": "img/products/ir-64-rice.webp"
   },
   {
    "id": "sona-masuri-steam-rice",
+   "_src": [
+    "rice",
+    8
+   ],
    "category": "rice",
    "name": "Sona Masuri Steam Rice",
    "about": "Premium quality Sona Masuri Steam Rice. Our offered Sona Masuri Steam Rice is processed under the strict supervision of our dexterous professionals in order to satisfy the demands.Rice is packed in safe packaging material to prevent it from dust, moisture and germs while transportation.",
@@ -187,10 +226,15 @@
     "Speciality": "100% Sortex Rice",
     "HS code": "10063020"
    },
-   "note": "Aromatic flavour, rich taste ,longer shelf life, 100% sortexed quality, best cooking result"
+   "note": "Aromatic flavour, rich taste ,longer shelf life, 100% sortexed quality, best cooking result",
+   "image": "img/products/sona-masuri-steam-rice.webp"
   },
   {
    "id": "1509-basmati-steam",
+   "_src": [
+    "rice",
+    9
+   ],
    "category": "rice",
    "name": "1509 Basmati Steam",
    "about": "We supply 1509 Basmati steam rice, best premium quality of Punjab having XXXL grain with best cooking.",
@@ -207,10 +251,15 @@
     "Speciality": "Pure 1509 Basmati rice.",
     "HS code": "10063020"
    },
-   "note": "Average grain length- 8.4 mm Broken: under 0.5% Moisture: 11%, Free from any impurities"
+   "note": "Average grain length- 8.4 mm Broken: under 0.5% Moisture: 11%, Free from any impurities",
+   "image": "img/products/1509-basmati-steam.webp"
   },
   {
    "id": "ponni-rice",
+   "_src": [
+    "rice",
+    10
+   ],
    "category": "rice",
    "name": "Ponni Rice",
    "about": "Rice comes from the Tamil Nadu region of Tanjavur",
@@ -228,10 +277,15 @@
     "Speciality": "100% Sortex Rice",
     "HS code": "10063020"
    },
-   "note": "Long shelf life, natural fragrance, enriched with nutrition, 100% sortexed quality"
+   "note": "Long shelf life, natural fragrance, enriched with nutrition, 100% sortexed quality",
+   "image": "img/products/ponni-rice.webp"
   },
   {
    "id": "jeerakasala-rice",
+   "_src": [
+    "rice",
+    11
+   ],
    "category": "rice",
    "name": "Jeerakasala Rice",
    "about": "Rice comes from parts of Bengal and Orissa. We are providing a premium quality Jeerakasala Rice in market. The rice we provide is easy consume, simple to cook, highly and nutritious , as it is cultivated at fertile farm with the use of top quality seeds, fertilizers, manure and various other input factors. King of all Biryani rice, it is mainly demanded in houses, hotels, canteens,and various eateries for the preparation of various dishes such as Pulao, Biryani, Kheer, etc",
@@ -249,10 +303,15 @@
     "Speciality": "100% Sortex Rice",
     "HS code": "10063020"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/jeerakasala-rice.webp"
   },
   {
    "id": "palakaddan-matta-rice-unda",
+   "_src": [
+    "rice",
+    12
+   ],
    "category": "rice",
    "name": "Palakaddan Matta Rice (unda)",
    "about": "Cultivated in Kerala and widly consumed in most parts of south India.",
@@ -270,10 +329,15 @@
     "Speciality": "100% Sortex Rice",
     "HS code": "10063020"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/palakaddan-matta-rice-unda.webp"
   },
   {
    "id": "cardamom",
+   "_src": [
+    "spices",
+    0
+   ],
    "category": "spices",
    "name": "Cardamom",
    "about": "Our offered range of best quality Green Cardamom is grown and processed under hygienic conditions by the experts. Cardamom is extensively used in various food industries for adding flavor to the dishes and providing an aromatic taste to the culinary. We offer this range in high quality packaging material to retain their original characteristics and taste in the original form. Clients can avail this range in varied quantities as per their particular requirement",
@@ -284,10 +348,15 @@
     "Pack size": "1Kg",
     "HS code": "09083120"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/cardamom.webp"
   },
   {
    "id": "black-peppercorn",
+   "_src": [
+    "spices",
+    1
+   ],
    "category": "spices",
    "name": "Black Peppercorn",
    "about": "Our offered range of best quality Black Peppercorn is grown and processed under hygienic conditions by the experts Sourced from parts of Karnataka and Kerala Packaging size1Kg, 5Kgs, 25Kgs, 50Kgs",
@@ -300,10 +369,15 @@
     "Light berries": "2%",
     "HS code": "09041130"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/black-peppercorn.webp"
   },
   {
    "id": "clove",
+   "_src": [
+    "spices",
+    2
+   ],
    "category": "spices",
    "name": "Clove",
    "about": "Our offered range of best quality Brown Cloves is grown and processed under hygienic conditions by the experts Sourced from parts of Kerala",
@@ -317,10 +391,15 @@
     "Pack size": "1Kg, 5Kg",
     "HS code": "09071020"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/clove.webp"
   },
   {
    "id": "cinnamon",
+   "_src": [
+    "spices",
+    3
+   ],
    "category": "spices",
    "name": "Cinnamon",
    "about": "Our offered range of best quality Cinnamon Sticks is grown and processed under hygienic conditions by the experts Sourced from parts of Kerala",
@@ -334,10 +413,15 @@
     "Pack size": "1Kg, 5Kg",
     "HS code": "09061110"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/cinnamon.webp"
   },
   {
    "id": "mace-flower",
+   "_src": [
+    "spices",
+    4
+   ],
    "category": "spices",
    "name": "Mace Flower",
    "about": "Our offered range of best quality Mace Flower (Javitri) is grown and processed under hygienic conditions by the experts Sourced from parts of Kerala",
@@ -350,10 +434,15 @@
     "Shelf life": "1 Yr",
     "HS code": "09083190"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/mace-flower.webp"
   },
   {
    "id": "nutmeg",
+   "_src": [
+    "spices",
+    5
+   ],
    "category": "spices",
    "name": "Nutmeg",
    "about": "",
@@ -365,10 +454,15 @@
     "Storage": "Cool and dry place",
     "HS code": "09083190"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/nutmeg.webp"
   },
   {
    "id": "coriander-seeds",
+   "_src": [
+    "spices",
+    6
+   ],
    "category": "spices",
    "name": "Coriander Seeds",
    "about": "We are engaged in offering optimum quality bold size Coriander Seeds with good essential oil contents. Coriander is the ingredient of almost every Indian dish in some form or the other - either as coarse or fine powder. It provides fresh taste and aroma to any dish.",
@@ -381,10 +475,15 @@
     "Pack size": "25kg, 50kg",
     "HS code": "09092110"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/coriander-seeds.webp"
   },
   {
    "id": "cumin-seeds",
+   "_src": [
+    "spices",
+    7
+   ],
    "category": "spices",
    "name": "Cumin Seeds",
    "about": "Cumin , Jeera is a flowering plant in the family Apiaceae, native to the Irano-Turanian Region. Its seeds – each one contained within a fruit, which is dried – are used in the cuisines of many cultures in both whole and ground form",
@@ -397,10 +496,15 @@
     "Shelf life": "12 months",
     "HS code": "09092110"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/cumin-seeds.webp"
   },
   {
    "id": "ajwain",
+   "_src": [
+    "spices",
+    8
+   ],
    "category": "spices",
    "name": "Ajwain",
    "about": "Ajwain, ajowan, or Trachyspermum ammi—also known as ajowan caraway, thymol seeds, bishop's weed, or carom—is an annual herb in the family Apiaceae. Both the leaves and the seed like fruit of the plant are consumed by humans.",
@@ -412,10 +516,15 @@
     "Shelf life": "12 months",
     "HS code": "0909914"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/ajwain.webp"
   },
   {
    "id": "fenugreek-seeds",
+   "_src": [
+    "spices",
+    9
+   ],
    "category": "spices",
    "name": "Fenugreek Seeds",
    "about": "Methi, Fenugreek is an annual plant in the family Fabaceae, with leaves consisting of three small obovate to oblong leaflets. It is cultivated worldwide as a semiarid crop. Its seeds and leaves are common ingredients in dishes from the Indian subcontinent, and have been used as a culinary ingredient since ancient times",
@@ -428,10 +537,15 @@
     "Shelf life": "12 months",
     "HS code": "0909914"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/fenugreek-seeds.webp"
   },
   {
    "id": "mustard-seeds",
+   "_src": [
+    "spices",
+    10
+   ],
    "category": "spices",
    "name": "Mustard Seeds",
    "about": "Mustard seeds are the small round seeds of various mustard plants. The seeds are usually about 1 to 2 millimetres in diameter and may be colored from yellowish white to black , Rai , Sarso",
@@ -444,10 +558,15 @@
     "Shelf life": "12 months",
     "HS code": "0909927"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/mustard-seeds.webp"
   },
   {
    "id": "star-anise",
+   "_src": [
+    "spices",
+    11
+   ],
    "category": "spices",
    "name": "Star Anise",
    "about": "Full Autumn Premium Quality of Star Anise Origin: Vietnam Star anise, dry fruits of the star anise tree (Illicium verum), used as a spice and source of pharmaceutical chemicals. Picked before it ripens and then dried in the sun, turning it a deep brown or rust colour Sowed in Springs within a green house",
@@ -460,10 +579,15 @@
     "Shelf life": "1-2 Years",
     "HS code": "0909927"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/star-anise.webp"
   },
   {
    "id": "sesame-seeds-white",
+   "_src": [
+    "spices",
+    12
+   ],
    "category": "spices",
    "name": "Sesame Seeds White",
    "about": "Sesame seeds are tiny, oil-rich seeds that grow in pods on the Sesamum indicum plant. They have been used in folk medicine for thousands of years. Unhulled seeds have the outer, edible husk intact, while hulled seeds come without the husk. The hull gives the seeds a golden-brown hue.",
@@ -476,10 +600,15 @@
     "Shelf life": "12 months",
     "HS code": "0909927"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/sesame-seeds-white.webp"
   },
   {
    "id": "sesame-seeds-black",
+   "_src": [
+    "spices",
+    13
+   ],
    "category": "spices",
    "name": "Sesame Seeds Black",
    "about": "Black sesame seeds are small, flat, oily seeds that grow in the fruit pods of the Sesamum indicum plant,",
@@ -492,10 +621,15 @@
     "Shelf life": "12 months",
     "HS code": "12074010"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/sesame-seeds-black.webp"
   },
   {
    "id": "frozen-green-peas",
+   "_src": [
+    "iqf",
+    0
+   ],
    "category": "iqf",
    "name": "Frozen Green Peas",
    "about": "Green Peas is a pod shaped vegetable, Peas,Legume. Green Peas are packed with health benefits, high in protein, vitamins and minerals",
@@ -507,10 +641,15 @@
     "Shelf life": "2 years",
     "HS code": "07102100"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/frozen-green-peas.webp"
   },
   {
    "id": "frozen-sweet-corn",
+   "_src": [
+    "iqf",
+    1
+   ],
    "category": "iqf",
    "name": "Frozen Sweet Corn",
    "about": "Sweet corn is considered a staple food in most parts of the world. Come in a juicy golden color. It containes health benefits, good nutrients, carbohydrates, fats and vitamins and present.",
@@ -522,10 +661,15 @@
     "Shelf life": "2 years",
     "HS code": "07104000"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/frozen-sweet-corn.webp"
   },
   {
    "id": "frozen-carrot",
+   "_src": [
+    "iqf",
+    2
+   ],
    "category": "iqf",
    "name": "Frozen Carrot",
    "about": "It’s a root vegetable, orange in color and is packed with antioxidants, vitamins and ditery fibres",
@@ -537,10 +681,15 @@
     "Shelf life": "2 years",
     "HS code": "07109000"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/frozen-carrot.webp"
   },
   {
    "id": "frozen-cauliflower",
+   "_src": [
+    "iqf",
+    3
+   ],
    "category": "iqf",
    "name": "Frozen Cauliflower",
    "about": "Cauliflower is a white coloured flower like vegetable, good source for phytochemical and also containes vital nutrients and vitamins",
@@ -552,10 +701,15 @@
     "Shelf life": "2 years",
     "HS code": "07041000"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/frozen-cauliflower.webp"
   },
   {
    "id": "frozen-broccoli",
+   "_src": [
+    "iqf",
+    4
+   ],
    "category": "iqf",
    "name": "Frozen Broccoli",
    "about": "Broccoli is a edible green vegetable, which has large flower type of floret head and stalk which is edible and contains high nutrients and vitamins.",
@@ -567,10 +721,15 @@
     "Shelf life": "2 years",
     "HS code": "07041000"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/frozen-broccoli.webp"
   },
   {
    "id": "frozen-mix-vegetables",
+   "_src": [
+    "iqf",
+    5
+   ],
    "category": "iqf",
    "name": "Frozen Mix Vegetables",
    "about": "The frozen vegetables are sorted, washed,Peeled, drained and IQF frozen",
@@ -579,10 +738,15 @@
     "Storage": "- 18C and Below",
     "Shelf life": "2 years"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/frozen-mix-vegetables.webp"
   },
   {
    "id": "frozen-french-fries",
+   "_src": [
+    "iqf",
+    6
+   ],
    "category": "iqf",
    "name": "Frozen French Fries",
    "about": "The french fries start with high quality potato and are sourced from dedicated farms. We take atmost care at the facility to ensure all the quality and saftey is monitored.",
@@ -593,10 +757,15 @@
     "Allergen info": "Manufactured in a facility that process wheat and milk based products",
     "HS code": "20041000"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/frozen-french-fries.webp"
   },
   {
    "id": "frozen-hash-brown",
+   "_src": [
+    "iqf",
+    7
+   ],
    "category": "iqf",
    "name": "Frozen Hash Brown",
    "about": "The crispy hash browns are made with high quality potato and are sourced from dedicated farms. We take atmost care at the facility to ensure all the quality and saftey is monitored.",
@@ -607,10 +776,15 @@
     "Allergen info": "Manufactured in a facility that process wheat and milk based products",
     "HS code": "20041000"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/frozen-hash-brown.webp"
   },
   {
    "id": "speciality-potato-products",
+   "_src": [
+    "iqf",
+    8
+   ],
    "category": "iqf",
    "name": "Speciality Potato Products",
    "about": "Made with high quality potato. Seasoned with delicious blend of spices and condiments. The perfect snack for any time of the day. ( Spicy Wedges, Potato Cheese shots, Veggie Finger, Chilli Garlic bites, Herb Chilli Patty, Aloo Tikki, Lemon n Mint wedges)",
@@ -621,10 +795,15 @@
     "Allergen info": "Manufactured in a facility that process wheat and milk based products",
     "HS code": "20041000"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/speciality-potato-products.webp"
   },
   {
    "id": "coconut-oil",
+   "_src": [
+    "oils",
+    0
+   ],
    "category": "oils",
    "name": "Coconut Oil",
    "about": "Coconut oil is made by pressing fresh coconut meat or dried coconut meat called copra. Coconut oil is a white solid fat below around 25 °C (77 °F), and a clear thin liquid oil in warmer climates.",
@@ -637,10 +816,15 @@
     "Shelf life": "12 months",
     "HS code": "15131900"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/coconut-oil.webp"
   },
   {
    "id": "extra-virgin-coconut-oil",
+   "_src": [
+    "oils",
+    1
+   ],
    "category": "oils",
    "name": "Extra Virgin Coconut Oil",
    "about": "Virgin coconut oil uses fresh meat, while refined coconut oil typically uses copra. Unlike olive oil, the terms “virgin” and “extra virgin” are not regulated with coconut oil.",
@@ -653,10 +837,15 @@
     "Shelf life": "12 months",
     "HS code": "15131900"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/extra-virgin-coconut-oil.webp"
   },
   {
    "id": "groundnut-oil",
+   "_src": [
+    "oils",
+    2
+   ],
    "category": "oils",
    "name": "Groundnut Oil",
    "about": "Peanut oil, also known as groundnut oil or arachis oil, is a vegetable oil derived from peanuts. The oil usually has a mild or neutral flavor but, if made with roasted peanuts, has a stronger peanut flavor and aroma.",
@@ -669,10 +858,15 @@
     "Shelf life": "12 months",
     "HS code": "15081000"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/groundnut-oil.webp"
   },
   {
    "id": "mustard-oil",
+   "_src": [
+    "oils",
+    3
+   ],
    "category": "oils",
    "name": "Mustard Oil",
    "about": "Mustard oil is reddish-brown or amber in colour and is known for its strong smell and pungent sharp flavour. The pungency of mustard oil is due to the presence of allyl isothiocyanate. This fatty vegetable oil is obtained by pressing mustard seeds",
@@ -684,10 +878,15 @@
     "Shelf life": "12 months",
     "HS code": "15149120"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/mustard-oil.webp"
   },
   {
    "id": "sesame-oil",
+   "_src": [
+    "oils",
+    4
+   ],
    "category": "oils",
    "name": "Sesame Oil",
    "about": "Sesame oil is an edible vegetable oil derived from sesame seeds. Sesame Seed Oil widely known as Til Oil in India is extracted from the best-selected sesame seeds.",
@@ -700,10 +899,15 @@
     "Shelf life": "12 months",
     "HS code": "15155091"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/sesame-oil.webp"
   },
   {
    "id": "olive-oil",
+   "_src": [
+    "oils",
+    5
+   ],
    "category": "oils",
    "name": "Olive Oil",
    "about": "Olive oil is a liquid fat obtained by pressing whole olives, the fruit of Olea europaea, a traditional tree crop of the Mediterranean Basin, and extracting the oil. Olive oil varies in colour from clear yellow to golden; some varieties obtained from unripe fruit have a greenish tinge.",
@@ -715,10 +919,15 @@
     "Shelf life": "18-24 months",
     "HS code": "15091000"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/olive-oil.webp"
   },
   {
    "id": "extra-virgin-olive-oil",
+   "_src": [
+    "oils",
+    6
+   ],
    "category": "oils",
    "name": "Extra Virgin Olive Oil",
    "about": "Extra virgin olive oil is highest quality, most flavorful and most expensive type of olive oil because it's unrefined--never heated or processed with chemicals. Extra virgin olive oil is the least processed form of olive oil. Due to this, it retains its natural antioxidants and vitamins.",
@@ -730,10 +939,15 @@
     "Shelf life": "18-24 months",
     "HS code": "15091000"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/extra-virgin-olive-oil.webp"
   },
   {
    "id": "pure-ghee",
+   "_src": [
+    "oils",
+    7
+   ],
    "category": "oils",
    "name": "Pure Ghee",
    "about": "Ghee is a semi-solid at room temperature, but it can be easily melted or liquified when heated. Ghee has a nutty, buttery flavor and a high smoke point, making it ideal for frying and sautéing. Ghee is often made from cow's milk, but it can also be made from the milk of goats, sheep, or buffalo.",
@@ -746,10 +960,15 @@
     "Shelf life": "9-12 months",
     "HS code": "4059020"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/pure-ghee.webp"
   },
   {
    "id": "a2-ghee",
+   "_src": [
+    "oils",
+    8
+   ],
    "category": "oils",
    "name": "A2 Ghee",
    "about": "A2 ghee means a type of clarified butter that is made from the milk of cows that naturally produce the A2 beta-casein protein. A2 cow ghee is grainy in texture and is made by heating butter on low flame for a long duration.",
@@ -762,7 +981,8 @@
     "Shelf life": "9-12 months",
     "HS code": "4059020"
    },
-   "note": ""
+   "note": "",
+   "image": "img/products/a2-ghee.webp"
   }
  ]
 }
