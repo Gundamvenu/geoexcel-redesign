@@ -81,7 +81,7 @@ for (const [label, vw, vh, mob] of [['desktop', 1440, 900, false], ['mobile', 39
   await page.goto(BASE + '/', { waitUntil: 'networkidle' });
   const hrefs = await page.$$eval('a[href]', (as) => [...new Set(as.map((a) => a.getAttribute('href')))].filter((h) => h.startsWith('/')));
   let broken = [];
-  for (const h of hrefs) { const rr = await page.request.get(BASE + h.split('#')[0]); if (rr.status() >= 400) broken.push(h + ' ' + rr.status()); }
+  for (const h of hrefs) { const rr = await page.request.get(new URL(h.split('#')[0], BASE).href); if (rr.status() >= 400) broken.push(h + ' ' + rr.status()); }
   ok(T(`home internal links (${hrefs.length}) all resolve`), broken.length === 0, broken.join(','));
   ok(T('no console errors'), errs.filter((e) => !/404/.test(e)).length === 0, errs.join(' | '));
   await ctx.close();
