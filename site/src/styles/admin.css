@@ -1,0 +1,53 @@
+/* Admin area. Reuses the public design tokens (global.css); only layout and table styling is added. */
+body.admin { background: var(--paper); }
+.admin-bar { background: var(--ink); color: #fff; }
+.admin-bar .bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; min-height: 64px; padding-block: 8px; }
+.admin-title { font: 600 1.05rem var(--sans); letter-spacing: .03em; margin-right: 6px; }
+.admin-nav { display: flex; gap: 4px; flex: 1; flex-wrap: wrap; }
+.admin-nav a { color: #fff; text-decoration: none; padding: 10px 14px; border-radius: 999px; min-height: 44px; display: inline-flex; align-items: center; font-weight: 500; }
+.admin-nav a:hover { background: rgb(255 255 255 / 12%); }
+.admin-nav a[aria-current='page'] { background: var(--orange); color: var(--ink); }
+.admin-user { font: 400 .85rem var(--mono); color: #d7dee5; overflow-wrap: anywhere; }
+.admin-bar .btn { border-color: #fff; color: #fff; }
+.admin-bar .btn:hover { background: #fff; color: var(--ink); }
+.admin-main { padding-block: 28px 64px; }
+.admin-main h1 { font-size: clamp(1.7rem, 2.5vw + .8rem, 2.4rem); margin-bottom: 14px; }
+.admin-main h1:focus { outline: none; }
+.admin-main h2 { font-size: 1.15rem; font-family: var(--sans); font-weight: 600; letter-spacing: 0; margin-bottom: 10px; }
+.login { min-height: 80vh; display: grid; place-items: center; padding: 24px var(--gutter); }
+.login .panel { width: min(100%, 420px); }
+.panel { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 22px; margin-bottom: 18px; }
+.panel form, form.panel { display: grid; gap: 14px; }
+.head-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 8px; }
+.toolbar { display: flex; flex-wrap: wrap; gap: 12px 16px; align-items: end; margin-bottom: 18px; }
+.admin-main .toolbar .field { margin: 0; }
+.admin-grid { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+@media (max-width: 900px) { .admin-grid { grid-template-columns: 1fr; } }
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); }
+table.data { width: 100%; border-collapse: collapse; font-size: .95rem; }
+table.data th, table.data td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.data thead th { background: var(--paper-2); font: 500 .75rem var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); white-space: nowrap; }
+table.data tbody th { font-weight: 600; }
+table.data tr:last-child th, table.data tr:last-child td { border-bottom: 0; }
+table.data tr.off { opacity: .6; }
+table.data .sub { display: block; font: 400 .8rem var(--mono); color: var(--muted); margin-top: 2px; overflow-wrap: anywhere; }
+table.data .actions { white-space: nowrap; display: flex; gap: 6px; }
+dl.kv { display: grid; grid-template-columns: 110px 1fr; gap: 6px 14px; margin: 0 0 10px; }
+dl.kv dt { color: var(--muted); font: 500 .75rem/1.9 var(--mono); letter-spacing: .06em; text-transform: uppercase; }
+dl.kv dd { margin: 0; overflow-wrap: anywhere; }
+.pre { white-space: pre-wrap; margin: 0; }
+.badge { display: inline-block; font: 600 .72rem/1 var(--mono); letter-spacing: .04em; padding: 5px 8px; border-radius: 6px; background: var(--paper-2); color: var(--ink); margin-right: 4px; }
+.badge.s-new { background: #fff0d1; color: #6b3b00; }
+.badge.s-in_review { background: #e8f1fb; color: #12304f; }
+.badge.s-quoted { background: #ede3fa; color: #3a1d6b; }
+.badge.s-won { background: #e6f6e8; color: #123d17; }
+.badge.s-lost { background: #fdecee; color: #6e0010; }
+.badge.s-closed { background: #e9e6df; color: #3b3b3b; }
+fieldset.specs { border: 1.5px dashed var(--ink-2); border-radius: 12px; padding: 14px 16px; display: grid; gap: 10px; }
+fieldset.specs legend { font-weight: 600; padding: 0 6px; }
+.spec-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) auto; gap: 8px; align-items: start; }
+@media (max-width: 640px) { .spec-row { grid-template-columns: 1fr; } }
+.checks { display: grid; gap: 8px; }
+.checks label { display: flex; gap: 10px; align-items: flex-start; min-height: 32px; }
+.checks input { width: 20px; height: 20px; margin-top: 3px; flex: none; min-height: 0; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 12px; }

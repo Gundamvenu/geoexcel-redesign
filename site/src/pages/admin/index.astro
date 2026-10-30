@@ -1,0 +1,7 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import App from '../../admin/App';
+---
+<AdminLayout title="Geo Excel admin">
+  <App client:only="preact" />
+</AdminLayout>
