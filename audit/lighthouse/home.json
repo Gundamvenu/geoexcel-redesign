@@ -1,0 +1,82 @@
+{
+ "mobile": {
+  "scores": {
+   "performance": 25,
+   "accessibility": 100,
+   "best-practices": 77,
+   "seo": 54
+  },
+  "metrics": {
+   "first-contentful-paint": "8.8 s",
+   "largest-contentful-paint": "17.2 s",
+   "total-blocking-time": "3,710 ms",
+   "cumulative-layout-shift": "0",
+   "speed-index": "19.2 s"
+  },
+  "failed": [
+   "first-contentful-paint: First Contentful Paint",
+   "largest-contentful-paint: Largest Contentful Paint",
+   "speed-index: Speed Index",
+   "total-blocking-time: Total Blocking Time",
+   "max-potential-fid: Max Potential First Input Delay",
+   "interactive: Time to Interactive",
+   "third-party-cookies: Uses third-party cookies",
+   "mainthread-work-breakdown: Minimize main-thread work",
+   "bootup-time: Reduce JavaScript execution time",
+   "total-byte-weight: Avoid enormous network payloads",
+   "unused-css-rules: Reduce unused CSS",
+   "unused-javascript: Reduce unused JavaScript",
+   "inspector-issues: Issues were logged in the `Issues` panel in Chrome Devtools",
+   "meta-description: Document does not have a meta description",
+   "link-text: Links do not have descriptive text",
+   "is-crawlable: Page is blocked from indexing",
+   "cache-insight: Use efficient cache lifetimes",
+   "image-delivery-insight: Improve image delivery",
+   "lcp-breakdown-insight: LCP breakdown",
+   "lcp-discovery-insight: LCP request discovery",
+   "legacy-javascript-insight: Legacy JavaScript",
+   "network-dependency-tree-insight: Network dependency tree",
+   "render-blocking-insight: Render-blocking requests"
+  ]
+ },
+ "desktop": {
+  "scores": {
+   "performance": 31,
+   "accessibility": 100,
+   "best-practices": 77,
+   "seo": 54
+  },
+  "metrics": {
+   "first-contentful-paint": "2.4 s",
+   "largest-contentful-paint": "5.3 s",
+   "total-blocking-time": "12,110 ms",
+   "cumulative-layout-shift": "0.004",
+   "speed-index": "2.8 s"
+  },
+  "failed": [
+   "first-contentful-paint: First Contentful Paint",
+   "largest-contentful-paint: Largest Contentful Paint",
+   "speed-index: Speed Index",
+   "total-blocking-time: Total Blocking Time",
+   "max-potential-fid: Max Potential First Input Delay",
+   "interactive: Time to Interactive",
+   "third-party-cookies: Uses third-party cookies",
+   "mainthread-work-breakdown: Minimize main-thread work",
+   "bootup-time: Reduce JavaScript execution time",
+   "total-byte-weight: Avoid enormous network payloads",
+   "unused-css-rules: Reduce unused CSS",
+   "unused-javascript: Reduce unused JavaScript",
+   "inspector-issues: Issues were logged in the `Issues` panel in Chrome Devtools",
+   "meta-description: Document does not have a meta description",
+   "link-text: Links do not have descriptive text",
+   "is-crawlable: Page is blocked from indexing",
+   "cache-insight: Use efficient cache lifetimes",
+   "duplicated-javascript-insight: Duplicated JavaScript",
+   "forced-reflow-insight: Forced reflow",
+   "image-delivery-insight: Improve image delivery",
+   "lcp-discovery-insight: LCP request discovery",
+   "legacy-javascript-insight: Legacy JavaScript",
+   "network-dependency-tree-insight: Network dependency tree"
+  ]
+ }
+}

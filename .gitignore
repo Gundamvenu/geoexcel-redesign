@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+*.log
+# the candidate brief supplied separately; not part of the deliverable
+Geo_Excel_Website_Redesign_Assignment_Professional.pdf
