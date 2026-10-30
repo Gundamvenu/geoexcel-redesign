@@ -1,0 +1,12 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch();
+const ctx = await b.newContext({ viewport: { width: 1440, height: 900 } });
+const page = await ctx.newPage();
+await page.addInitScript(() => localStorage.setItem('geoexcel-enquiry', JSON.stringify(['1121-basmati-steam-rice', 'cardamom', 'frozen-carrot'])));
+await page.goto('http://localhost:4321/products/', { waitUntil: 'networkidle' }); await page.screenshot({ path: '../verify-local/products-viewport.jpg', type: 'jpeg', quality: 70 });
+await page.goto('http://localhost:4321/products/cardamom/', { waitUntil: 'networkidle' }); await page.screenshot({ path: '../verify-local/detail-viewport.jpg', type: 'jpeg', quality: 70 });
+await page.goto('http://localhost:4321/enquiry/', { waitUntil: 'networkidle' });
+const sels = page.locator('#basket-list li.line').nth(0).locator('select'); await sels.nth(0).selectOption({ index: 2 });
+await page.screenshot({ path: '../verify-local/enquiry-viewport.jpg', type: 'jpeg', quality: 70, fullPage: false });
+await page.evaluate(() => scrollTo(0, 420)); await page.screenshot({ path: '../verify-local/enquiry-lines.jpg', type: 'jpeg', quality: 70 });
+await b.close();

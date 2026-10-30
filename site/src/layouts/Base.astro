@@ -12,12 +12,13 @@ const fullTitle = title.includes('Geo Excel') ? title : `${title} | Geo Excel`;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const ogImage = new URL(u(image), Astro.site).href;
 const nav = [
+  { href: '', label: 'Home' },
   { href: 'products/', label: 'Products' },
   { href: 'credentials/', label: 'Credentials' },
   { href: 'about/', label: 'About' },
   { href: 'sustainability/', label: 'Sustainability' },
 ];
-const isActive = (h: string) => path.startsWith('/' + h);
+const isActive = (h: string) => (h === '' ? path === '/' : path.startsWith('/' + h));
 ---
 <!doctype html>
 <html lang="en">
@@ -48,9 +49,9 @@ const isActive = (h: string) => path.startsWith('/' + h);
     <a class="skip" href="#main">Skip to main content</a>
     <header class="site-header">
       <div class="wrap bar">
-        <a class="brand" href={u()} aria-label="Geo Excel, home">
+        <a class="brand" href={u()}>
           <img src={u('img/mark.png')} alt="" width="30" height="46" />
-          <span>GEO EXCEL<small>Export trade · Bangalore</small></span>
+          <span>GEO EXCEL<small>Export trade · Bangalore</small><span class="sr-only"> (home)</span></span>
         </a>
         <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" id="menu-btn">
           <span aria-hidden="true">☰</span> Menu

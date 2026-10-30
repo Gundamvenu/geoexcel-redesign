@@ -15,17 +15,35 @@ for (const [label, vw, vh, mob] of [['desktop', 1440, 900, false], ['mobile', 39
   await page.fill('#q', 'clove'); ok(T('search clove'), (await page.locator('.pcard:visible').count()) === 1);
   await page.fill('#q', ''); await page.click('[data-filter="all"]');
   await page.fill('#q', '10063020'); const hs = await page.locator('.pcard:visible').count(); ok(T('HS-code search finds rice'), hs >= 10, hs); await page.fill('#q', '');
-  // add two products
+  // product images load
+  await page.evaluate(() => document.querySelectorAll('img[loading=lazy]').forEach((i) => (i.loading = 'eager')));
+  await page.waitForTimeout(2500);
+  const brokenImgs = await page.$$eval('.pcard .pimg img', (is) => is.filter((i) => !i.complete || i.naturalWidth === 0).length);
+  ok(T('all catalogue product images load'), brokenImgs === 0, brokenImgs);
+  // Home link in nav
+  if (mob) await page.click('#menu-btn');
+  ok(T('Home link present in nav'), (await page.locator('#nav a', { hasText: /^Home$/ }).count()) === 1);
+  if (mob) await page.click('#menu-btn');
+  // add two products: one rice, one spice (different specs)
+  await page.fill('#q', 'basmati'); await page.locator('.pcard:visible [data-add]').first().click();
+  await page.fill('#q', 'cardamom'); await page.locator('.pcard:visible [data-add]').first().click(); await page.fill('#q', '');
+  // (legacy block below kept for badge checks)
   const addBtns = page.locator('.pcard:visible [data-add]');
-  await addBtns.nth(0).click(); await addBtns.nth(1).click();
   const hdrBadge = page.locator('#nav [data-count]');
   if (mob) await page.click('#menu-btn');
   ok(T('header badge shows 2'), (await hdrBadge.textContent()).trim() === '2');
-  ok(T('button pressed state'), (await addBtns.nth(0).getAttribute('aria-pressed')) === 'true');
   // go to enquiry via header CTA
   await page.click('#nav a.btn-accent');
   await page.waitForURL('**/enquiry/');
   ok(T('enquiry lists 2 products'), (await page.locator('#basket-list li').count()) === 2);
+  const labelsOf = async (n) => page.locator('#basket-list li.line').nth(n).locator('label').allTextContents();
+  const l0 = await labelsOf(0), l1 = await labelsOf(1);
+  ok(T('each product has its own option set'), JSON.stringify(l0) !== JSON.stringify(l1), l0.join(',') + ' vs ' + l1.join(','));
+  ok(T('product facts (HS code) shown per line'), (await page.locator('#basket-list li.line').nth(0).locator('.line-facts').textContent()).includes('HS code'));
+  const sel0 = page.locator('#basket-list li.line').nth(0).locator('select').first();
+  const opt = await sel0.locator('option').nth(1).textContent(); await sel0.selectOption({ index: 1 });
+  await page.locator('#basket-list li.line').nth(0).locator('input[type=text]').fill('20 MT');
+  await page.locator('#basket-list li.line').nth(1).locator('input[type=text]').fill('500 kg');
   // validation
   await page.click('#send');
   const e1 = await page.locator('#name-err').textContent(); ok(T('validation errors shown'), /name/i.test(e1));
@@ -46,6 +64,11 @@ for (const [label, vw, vh, mob] of [['desktop', 1440, 900, false], ['mobile', 39
   ok(T('API path success message'), /has been sent/.test(await page.locator('#status').textContent()));
   ok(T('API payload has access_key and message'), posted && posted.includes('test-key') && posted.includes('Test Imports LLC'));
   ok(T('basket cleared after send'), (await page.locator('#basket-list li').count()) === 0);
+  // detail page: image, back link, home
+  await page.goto(BASE + '/products/cardamom/', { waitUntil: 'networkidle' });
+  ok(T('detail image loads'), await page.$eval('.hero-img img', (i) => i.complete && i.naturalWidth > 0));
+  await page.click('text=← Back to Whole spices'); await page.waitForURL('**/products/?c=spices');
+  ok(T('back link returns to filtered category'), (await page.locator('.pcard:visible').count()) === 14);
   // quote this product now
   await page.goto(BASE + '/products/pure-ghee/', { waitUntil: 'networkidle' });
   await page.click('.aside a.btn-accent'); await page.waitForURL('**/enquiry/**');

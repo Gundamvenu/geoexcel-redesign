@@ -1,12 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
 import { company } from '../data/company';
-import { products } from '../data/catalog';
+import { products, enquiryOptions, enquiryFacts, categories } from '../data/catalog';
 import { u } from '../data/url';
 
 // Optional free form backend (Web3Forms). Without a key the form falls back to composing an email to the company address.
 const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY || '';
-const names = Object.fromEntries(products.map((p) => [p.id, p.name]));
+// Per-product data for the enquiry lines: each product shows its own facts and offers its own choices.
+const info = Object.fromEntries(products.map((p) => [p.id, { name: p.name, cat: categories[p.category].name, facts: enquiryFacts(p), options: enquiryOptions(p) }]));
 ---
 <Base
   title="Request a quote | Enquiry"
@@ -22,9 +23,10 @@ const names = Object.fromEntries(products.map((p) => [p.id, p.name]));
 
   <section class="section" style="padding-top:8px">
     <div class="wrap form-wrap">
-      <form class="enquiry" id="enquiry" novalidate data-key={accessKey} data-email={company.email} data-names={JSON.stringify(names)} data-products={u('products/')}>
+      <form class="enquiry" id="enquiry" novalidate data-key={accessKey} data-email={company.email} data-info={JSON.stringify(info)} data-products={u('products/')}>
         <div class="basket" id="basket" aria-live="polite">
           <strong>Products in this enquiry <span class="count" data-count>0</span></strong>
+          <p class="muted" style="margin:4px 0 0;font-size:.9rem">Each product has its own pack size, packaging and quantity, taken from its specification.</p>
           <ul id="basket-list"></ul>
           <p class="muted" id="basket-empty" style="margin:8px 0 0;font-size:.95rem">None yet. <a href={u('products/')}>Browse the catalogue</a> or describe what you need in the message.</p>
         </div>
@@ -59,7 +61,7 @@ const names = Object.fromEntries(products.map((p) => [p.id, p.name]));
             <span class="err" id="country-err"></span>
           </div>
           <div class="field">
-            <label for="qty">Quantity per shipment <span class="hint">(optional)</span></label>
+            <label for="qty">Total volume / shipment <span class="hint">(optional)</span></label>
             <input id="qty" name="qty" type="text" placeholder="e.g. one 20 ft container" />
           </div>
         </div>
@@ -96,7 +98,15 @@ const names = Object.fromEntries(products.map((p) => [p.id, p.name]));
     import { getBasket, remove, clear, add } from '../scripts/basket';
 
     const form = document.getElementById('enquiry') as HTMLFormElement;
-    const names: Record<string, string> = JSON.parse(form.dataset.names!);
+    type Opt = { key: string; label: string; values: string[] };
+    type Info = { name: string; cat: string; facts: [string, string][]; options: Opt[] };
+    const info: Record<string, Info> = JSON.parse(form.dataset.info!);
+    const names: Record<string, string> = Object.fromEntries(Object.entries(info).map(([k, v]) => [k, v.name]));
+    // Per-product choices live in localStorage next to the basket so they survive navigation.
+    const DKEY = 'geoexcel-enquiry-details';
+    const loadD = (): Record<string, Record<string, string>> => { try { return JSON.parse(localStorage.getItem(DKEY) || '{}'); } catch { return {}; } };
+    let details = loadD();
+    const saveD = () => { try { localStorage.setItem(DKEY, JSON.stringify(details)); } catch { /* storage blocked */ } };
     const status = document.getElementById('status')!;
     const fallback = document.getElementById('fallback')!;
     const list = document.getElementById('basket-list')!;
@@ -107,14 +117,43 @@ const names = Object.fromEntries(products.map((p) => [p.id, p.name]));
     new URLSearchParams(location.search).get('p')?.split(',').forEach((id) => { if (names[id]) add(id); });
 
     function drawBasket() {
-      const ids = getBasket().filter((id) => names[id]);
+      const ids = getBasket().filter((id) => info[id]);
       list.replaceChildren(...ids.map((id) => {
-        const li = document.createElement('li');
-        const span = document.createElement('span'); span.textContent = names[id];
+        const it = info[id];
+        const li = document.createElement('li'); li.className = 'line'; li.dataset.id = id;
+        const head = document.createElement('div'); head.className = 'line-head';
+        const title = document.createElement('div');
+        const strong = document.createElement('strong'); strong.textContent = it.name;
+        const cat = document.createElement('div'); cat.className = 'muted'; cat.style.fontSize = '.8rem'; cat.textContent = it.cat;
+        title.append(strong, cat);
         const b = document.createElement('button'); b.type = 'button'; b.textContent = '×';
-        b.setAttribute('aria-label', `Remove ${names[id]}`);
+        b.setAttribute('aria-label', `Remove ${it.name}`);
         b.addEventListener('click', () => remove(id));
-        li.append(span, b);
+        head.append(title, b);
+        li.append(head);
+        if (it.facts.length) {
+          const facts = document.createElement('div'); facts.className = 'line-facts';
+          it.facts.forEach(([k, v]) => { const s = document.createElement('span'); const kb = document.createElement('b'); kb.textContent = k + ': '; s.append(kb, v); facts.append(s); });
+          li.append(facts);
+        }
+        const fields = document.createElement('div'); fields.className = 'line-fields';
+        const d = (details[id] ||= {});
+        const mk = (key: string, label: string, el: HTMLElement) => {
+          const wrap = document.createElement('div'); const lab = document.createElement('label'); lab.textContent = label;
+          const uid = `f-${id}-${key}`; el.id = uid; lab.htmlFor = uid; wrap.append(lab, el); fields.append(wrap);
+        };
+        it.options.forEach((o) => {
+          const sel = document.createElement('select');
+          sel.append(new Option('Not specified', ''));
+          o.values.forEach((v) => sel.append(new Option(v, v)));
+          sel.value = d[o.key] || '';
+          sel.addEventListener('change', () => { d[o.key] = sel.value; saveD(); });
+          mk(o.key, o.label, sel);
+        });
+        const q = document.createElement('input'); q.type = 'text'; q.placeholder = 'e.g. 25 MT'; q.value = d.qty || '';
+        q.addEventListener('input', () => { d.qty = q.value; saveD(); });
+        mk('qty', 'Quantity', q);
+        li.append(fields);
         return li;
       }));
       emptyMsg.hidden = ids.length > 0;
@@ -156,7 +195,16 @@ const names = Object.fromEntries(products.map((p) => [p.id, p.name]));
       if (v('phone')) lines.push(`Phone: ${v('phone')}`);
       lines.push(`Destination: ${v('country')}`);
       if (v('qty')) lines.push(`Quantity: ${v('qty')}`);
-      lines.push('', 'Products:', ...(ids.length ? ids.map((id) => `- ${names[id]}`) : ['- (none selected)']));
+      lines.push('', 'Products:');
+      if (!ids.length) lines.push('- (none selected)');
+      ids.forEach((id) => {
+        const it = info[id]; const d = details[id] || {};
+        const hs = it.facts.find(([k]) => k === 'HS code');
+        lines.push(`- ${it.name}${hs ? ` (HS ${hs[1]})` : ''}`);
+        const picks = it.options.filter((o) => d[o.key]).map((o) => `${o.label}: ${d[o.key]}`);
+        if (d.qty?.trim()) picks.push(`Quantity: ${d.qty.trim()}`);
+        if (picks.length) lines.push(`    ${picks.join(' | ')}`);
+      });
       if (v('message')) lines.push('', 'Message:', v('message'));
       return lines.join('\n');
     }
@@ -186,7 +234,7 @@ const names = Object.fromEntries(products.map((p) => [p.id, p.name]));
           const data = await res.json();
           if (!res.ok || !data.success) throw new Error(data.message || 'Send failed');
           show('ok', 'Thank you. Your enquiry has been sent.');
-          clear(); form.reset(); fallback.hidden = true;
+          clear(); details = {}; saveD(); form.reset(); fallback.hidden = true;
         } catch {
           show('bad', `We could not send the enquiry from this page. Please email ${to} using the message below.`);
           (document.getElementById('copy-text') as HTMLTextAreaElement).value = text; fallback.hidden = false;

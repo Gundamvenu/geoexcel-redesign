@@ -38,12 +38,14 @@ const ld = {
       <p class="eyebrow" style={`color:var(--orange-ink)`}>{cat.name}</p>
       <h1 style="font-size:clamp(2rem,4vw+.5rem,3.4rem)">{p.name}</h1>
       {p.about && <p>{p.about}</p>}
+      <p style="margin-top:20px"><a class="btn btn-sm" href={u(`products/?c=${p.category}`)}>← Back to {cat.name}</a> <a class="btn btn-sm" href={u('products/')}>All products</a></p>
     </div>
   </section>
 
   <section class="section" style="padding-top:8px">
     <div class="wrap detail">
       <div>
+        <figure class="hero-img"><img src={u(p.image)} alt={`${p.name}, product photo as published on geoexcel.group`} width="720" height="540" decoding="async" fetchpriority="high" /></figure>
         <div class="sheet">
           <h2>Specification sheet</h2>
           <table>
@@ -76,6 +78,7 @@ const ld = {
         <div class="grid">
           {related.map((r) => (
             <article class="pcard" style={`--accent:${catAccent[r.category]}`}>
+              <a class="pimg" href={u(`products/${r.id}/`)} tabindex="-1" aria-hidden="true"><img src={u(r.image)} alt="" width="360" height="270" loading="lazy" decoding="async" /></a>
               <h3><a href={u(`products/${r.id}/`)}>{r.name}</a></h3>
               <dl class="mini">{cardSpecs(r).map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}</dl>
               <div class="actions">

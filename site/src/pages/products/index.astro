@@ -34,10 +34,11 @@ import { u } from '../../data/url';
       <p class="sr-only" role="status" aria-live="polite" id="result-count"></p>
 
       <div class="grid" id="grid">
-        {products.map((p) => (
+        {products.map((p, n) => (
           <article class="pcard" data-cat={p.category} data-text={`${p.name} ${Object.values(p.specs).join(' ')} ${categories[p.category].name}`.toLowerCase()} style={`--accent:${catAccent[p.category]}`}>
+            <a class="pimg" href={u(`products/${p.id}/`)} tabindex="-1" aria-hidden="true"><img src={u(p.image)} alt="" width="360" height="270" loading={n < 3 ? 'eager' : 'lazy'} fetchpriority={n === 0 ? 'high' : undefined} decoding="async" /></a>
             <span class="cat-label">{categories[p.category].name}</span>
-            <h3><a href={u(`products/${p.id}/`)}>{p.name}</a></h3>
+            <h2 class="ptitle"><a href={u(`products/${p.id}/`)}>{p.name}</a></h2>
             <dl class="mini">
               {cardSpecs(p).map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}
             </dl>
