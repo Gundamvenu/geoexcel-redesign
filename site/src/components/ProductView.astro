@@ -1,0 +1,125 @@
+---
+// Product detail. Server-rendered for the 44 prebuilt pages (good for search engines and no-JS), then the script
+// refreshes it from Supabase. The same markup with no `product` is the client-rendered /products/view/ page.
+import { u } from '../data/url';
+import { orderedSpecs, categoryKey } from '../lib/specs';
+
+interface P { slug: string; name: string; category: string; about: string; image: string; specs: Record<string, string>; note: string }
+interface Props { product?: P }
+const { product } = Astro.props;
+const rows = product ? orderedSpecs({ category: product.category, specs: { ...product.specs } }) : [];
+---
+<section class="page-hero">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href={u('products/')}>Products</a></li>
+        <li><a id="p-crumb-cat" href={u(product ? `products/?c=${categoryKey(product.category)}` : 'products/')}>{product?.category ?? 'Category'}</a></li>
+        <li aria-current="page" id="p-crumb-name">{product?.name ?? 'Product'}</li>
+      </ol>
+    </nav>
+    <p class="eyebrow" id="p-cat">{product?.category ?? ''}</p>
+    <h1 id="p-name" style="font-size:clamp(2rem,4vw+.5rem,3.4rem)">{product?.name ?? 'Product'}</h1>
+    <p id="p-about">{product?.about ?? ''}</p>
+    <p style="margin-top:20px">
+      <a class="btn btn-sm" id="p-back" href={u(product ? `products/?c=${categoryKey(product.category)}` : 'products/')}>← Back to {product?.category ?? 'products'}</a>
+      <a class="btn btn-sm" href={u('products/')}>All products</a>
+    </p>
+  </div>
+</section>
+
+<section class="section" style="padding-top:8px">
+  <div class="wrap">
+    <div id="p-state" class="loadstate" hidden></div>
+    <div class="detail" id="product-view" data-slug={product?.slug ?? ''} data-static={product ? 'true' : 'false'} data-placeholder={u('img/mark.png')}>
+      <div id="p-main">
+        <figure class="hero-img" id="p-fig" hidden={!product}>
+          {product && <img id="p-img" src={u(product.image)} alt={`${product.name}, product photo as published on geoexcel.group`} width="720" height="540" decoding="async" fetchpriority="high" />}
+          {!product && <img id="p-img" src="" alt="" width="720" height="540" decoding="async" />}
+        </figure>
+        <div class="sheet" id="p-sheet" hidden={!product}>
+          <h2>Specification sheet</h2>
+          <table>
+            <tbody id="p-specs">
+              {rows.map(([k, v]) => <tr><th scope="row">{k}</th><td>{v}</td></tr>)}
+            </tbody>
+          </table>
+        </div>
+        <p class="source-note">Specifications are shown as stored in Geo Excel’s product catalogue (initially transcribed from geoexcel.group). Confirm the exact specification, packing and documentation with Geo Excel before ordering.</p>
+      </div>
+      <aside class="aside" id="p-aside" aria-labelledby="quote-h" hidden={!product}>
+        <h2 id="quote-h">Request a quote</h2>
+        <p>Add this product to your enquiry, then tell us quantity and destination.</p>
+        <button class="btn btn-ghost" type="button" id="p-add" data-add={product?.slug ?? ''} aria-pressed="false"><span class="lbl">Add to enquiry</span></button>
+        <a class="btn btn-accent" id="p-quote" href={u(`enquiry/${product ? `?p=${product.slug}` : ''}`)}>Quote this product now</a>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { fetchProductBySlug, productImage, ApiError, type DbProduct } from '../lib/api';
+  import { orderedSpecs, categoryKey, specStr } from '../lib/specs';
+  import { setState } from '../lib/dom';
+  import { u } from '../data/url';
+
+  const view = document.getElementById('product-view')!;
+  const isStatic = view.dataset.static === 'true';
+  const slug = view.dataset.slug || new URLSearchParams(location.search).get('slug') || '';
+  const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+  const stateEl = $('p-state');
+
+  function render(p: DbProduct) {
+    const key = categoryKey(p.category);
+    $('p-cat').textContent = p.category;
+    $('p-name').textContent = p.name;
+    $('p-crumb-name').textContent = p.name;
+    const crumb = $<HTMLAnchorElement>('p-crumb-cat'); crumb.textContent = p.category; crumb.href = u(`products/?c=${key}`);
+    const back = $<HTMLAnchorElement>('p-back'); back.textContent = `← Back to ${p.category}`; back.href = u(`products/?c=${key}`);
+    $('p-about').textContent = p.short_description ?? '';
+    const img = $<HTMLImageElement>('p-img');
+    const src = productImage(p);
+    $('p-fig').hidden = !src;
+    if (src) { img.src = src; img.alt = `${p.name}, product photo`; }
+
+    const body = $('p-specs');
+    body.replaceChildren(...orderedSpecs(p).map(([k, v]) => {
+      const tr = document.createElement('tr');
+      const th = document.createElement('th'); th.scope = 'row'; th.textContent = k;
+      const td = document.createElement('td'); td.textContent = v;
+      tr.append(th, td);
+      return tr;
+    }));
+    if (p.price_note) {
+      const tr = document.createElement('tr');
+      const th = document.createElement('th'); th.scope = 'row'; th.textContent = 'Price';
+      const td = document.createElement('td'); td.textContent = specStr(p.price_note);
+      tr.append(th, td); body.append(tr);
+    }
+    $('p-sheet').hidden = body.children.length === 0;
+    $('p-aside').hidden = false;
+    $('p-add').dataset.add = p.slug;
+    $<HTMLAnchorElement>('p-quote').href = u(`enquiry/?p=${p.slug}`);
+    document.dispatchEvent(new CustomEvent('basket:change')); // repaint the "Added" state for the new data-add value
+    if (!isStatic) document.title = `${p.name} | ${p.category} | Geo Excel`;
+  }
+
+  async function load() {
+    if (!slug) { setState(stateEl, 'empty', 'No product selected. Browse the catalogue to pick one.'); return; }
+    setState(stateEl, 'loading', isStatic ? 'Checking the latest specification…' : 'Loading product…');
+    try {
+      const p = await fetchProductBySlug(slug);
+      if (!p) {
+        setState(stateEl, 'empty', 'This product is no longer listed. Browse the catalogue or tell us what you need.');
+        $('p-main').hidden = true; $('p-aside').hidden = true;
+        return;
+      }
+      render(p);
+      setState(stateEl, 'none');
+    } catch (e) {
+      const msg = e instanceof ApiError ? e.message : 'Something went wrong.';
+      setState(stateEl, 'error', isStatic ? `${msg} Showing the saved specification instead.` : msg, load);
+    }
+  }
+  load();
+</script>

@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import ProductView from '../../components/ProductView.astro';
 import { products, categories, catAccent, byCategory, cardSpecs } from '../../data/catalog';
 import type { Product } from '../../data/catalog';
 import { u } from '../../data/url';
@@ -26,50 +27,7 @@ const ld = {
   description={`${p.name}: specification sheet. ${lead}. Request a quote from Geo Excel, Bangalore.`.slice(0, 300)}
   jsonLd={ld}
 >
-  <section class="page-hero">
-    <div class="wrap">
-      <nav class="crumbs" aria-label="Breadcrumb">
-        <ol>
-          <li><a href={u('products/')}>Products</a></li>
-          <li><a href={u(`products/?c=${p.category}`)}>{cat.name}</a></li>
-          <li aria-current="page">{p.name}</li>
-        </ol>
-      </nav>
-      <p class="eyebrow" style={`color:var(--orange-ink)`}>{cat.name}</p>
-      <h1 style="font-size:clamp(2rem,4vw+.5rem,3.4rem)">{p.name}</h1>
-      {p.about && <p>{p.about}</p>}
-      <p style="margin-top:20px"><a class="btn btn-sm" href={u(`products/?c=${p.category}`)}>← Back to {cat.name}</a> <a class="btn btn-sm" href={u('products/')}>All products</a></p>
-    </div>
-  </section>
-
-  <section class="section" style="padding-top:8px">
-    <div class="wrap detail">
-      <div>
-        <figure class="hero-img"><img src={u(p.image)} alt={`${p.name}, product photo as published on geoexcel.group`} width="720" height="540" decoding="async" fetchpriority="high" /></figure>
-        <div class="sheet">
-          <h2>Specification sheet</h2>
-          <table>
-            <tbody>
-              {specEntries.map(([k, v]) => <tr><th scope="row">{k}</th><td>{v}</td></tr>)}
-            </tbody>
-          </table>
-        </div>
-        {p.note && (
-          <div class="sheet" style="margin-top:18px">
-            <h2>Specification note</h2>
-            <p style="padding:14px 20px;margin:0">{p.note}</p>
-          </div>
-        )}
-        <p class="source-note">Transcribed from the product listing on geoexcel.group. Confirm the exact specification, packing and documentation with Geo Excel before ordering.</p>
-      </div>
-      <aside class="aside" aria-labelledby="quote-h">
-        <h2 id="quote-h">Request a quote</h2>
-        <p>Add this product to your enquiry, then tell us quantity and destination.</p>
-        <button class="btn btn-ghost" type="button" data-add={p.id} aria-pressed="false"><span class="lbl">Add to enquiry</span></button>
-        <a class="btn btn-accent" href={u(`enquiry/?p=${p.id}`)}>Quote this product now</a>
-      </aside>
-    </div>
-  </section>
+  <ProductView product={{ slug: p.id, name: p.name, category: cat.name, about: p.about, image: p.image, specs: p.specs, note: p.note }} />
 
   {related.length > 0 && (
     <section class="section alt">

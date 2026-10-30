@@ -11,14 +11,14 @@ import { u } from '../../data/url';
     <div class="wrap">
       <p class="eyebrow">Catalogue</p>
       <h1>{products.length} products, one enquiry</h1>
-      <p>Specifications are transcribed from Geo Excel’s current product listings. Add what you need and send a single quote request.</p>
+      <p>Specifications come from Geo Excel’s product catalogue. Add what you need and send a single quote request.</p>
     </div>
   </section>
 
   <section class="section" style="padding-top:8px">
     <div class="wrap">
       <div class="toolbar">
-        <div class="chips" role="group" aria-label="Filter by category">
+        <div class="chips" id="chips" role="group" aria-label="Filter by category">
           <button class="chip" type="button" data-filter="all" aria-pressed="true">All <span class="mono">{products.length}</span></button>
           {categoryIds.map((c) => (
             <button class="chip" type="button" data-filter={c} aria-pressed="false" style={`--c:${catAccent[c]}`}>
@@ -26,6 +26,7 @@ import { u } from '../../data/url';
             </button>
           ))}
         </div>
+        <span class="sync-hint" id="sync-hint" style="visibility:hidden" aria-hidden="true">Refreshing from the catalogue…</span>
         <div class="search">
           <label class="sr-only" for="q">Search products</label>
           <input id="q" type="search" placeholder="Search products or HS code" autocomplete="off" />
@@ -33,7 +34,8 @@ import { u } from '../../data/url';
       </div>
       <p class="sr-only" role="status" aria-live="polite" id="result-count"></p>
 
-      <div class="grid" id="grid">
+      <div id="catalog-state" class="loadstate" hidden></div>
+      <div class="grid" id="grid" data-static={JSON.stringify(products.map((p) => p.id))}>
         {products.map((p, n) => (
           <article class="pcard" data-cat={p.category} data-text={`${p.name} ${Object.values(p.specs).join(' ')} ${categories[p.category].name}`.toLowerCase()} style={`--accent:${catAccent[p.category]}`}>
             <a class="pimg" href={u(`products/${p.id}/`)} tabindex="-1" aria-hidden="true"><img src={u(p.image)} alt="" width="360" height="270" loading={n < 3 ? 'eager' : 'lazy'} fetchpriority={n === 0 ? 'high' : undefined} decoding="async" /></a>
@@ -54,13 +56,61 @@ import { u } from '../../data/url';
   </section>
 
   <script>
-    const cards = [...document.querySelectorAll<HTMLElement>('.pcard')];
-    const chips = [...document.querySelectorAll<HTMLButtonElement>('[data-filter]')];
+    import { fetchProducts, productImage, ApiError, type DbProduct } from '../../lib/api';
+    import { cardSpecs, specMap, categoryKey, categoryColor } from '../../lib/specs';
+    import { esc, setState } from '../../lib/dom';
+    import { u } from '../../data/url';
+
+    const grid = document.getElementById('grid')!;
+    const chipsEl = document.getElementById('chips')!;
     const q = document.getElementById('q') as HTMLInputElement;
     const empty = document.getElementById('empty')!;
     const status = document.getElementById('result-count')!;
+    const stateEl = document.getElementById('catalog-state')!;
+    const hint = document.getElementById('sync-hint')!;
+    const staticSlugs = new Set<string>(JSON.parse(grid.dataset.static || '[]'));
     let cat = new URLSearchParams(location.search).get('c') || 'all';
-    if (!chips.some((c) => c.dataset.filter === cat)) cat = 'all';
+    let cards: HTMLElement[] = [...grid.querySelectorAll<HTMLElement>('.pcard')];
+    let chips: HTMLButtonElement[] = [];
+
+    // Prebuilt products have their own page; products added later open the client-rendered view page.
+    const href = (slug: string) => (staticSlugs.has(slug) ? u(`products/${slug}/`) : u(`products/view/?slug=${encodeURIComponent(slug)}`));
+
+    function cardHtml(p: DbProduct, n: number) {
+      const key = categoryKey(p.category);
+      const img = productImage(p);
+      const text = `${p.name} ${Object.values(specMap(p)).join(' ')} ${p.category}`.toLowerCase();
+      const specs = cardSpecs(p).map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('');
+      return `<article class="pcard" data-live="1" data-cat="${esc(key)}" data-text="${esc(text)}" style="--accent:${esc(categoryColor(p.category))}">
+        <a class="pimg" href="${esc(href(p.slug))}" tabindex="-1" aria-hidden="true">${img ? `<img src="${esc(img)}" alt="" width="360" height="270" loading="${n < 3 ? 'eager' : 'lazy'}" decoding="async" />` : ''}</a>
+        <span class="cat-label">${esc(p.category)}</span>
+        <h2 class="ptitle"><a href="${esc(href(p.slug))}">${esc(p.name)}</a></h2>
+        <dl class="mini">${specs}</dl>
+        <div class="actions">
+          <a class="btn btn-sm" href="${esc(href(p.slug))}">Spec sheet</a>
+          <button class="btn btn-sm btn-primary" type="button" data-add="${esc(p.slug)}" aria-pressed="false"><span class="lbl">Add to enquiry</span></button>
+        </div>
+      </article>`;
+    }
+
+    function wireChips() {
+      chips = [...chipsEl.querySelectorAll<HTMLButtonElement>('[data-filter]')];
+      chips.forEach((c) => c.addEventListener('click', () => {
+        cat = c.dataset.filter!;
+        const url = new URL(location.href);
+        cat === 'all' ? url.searchParams.delete('c') : url.searchParams.set('c', cat);
+        history.replaceState(null, '', url);
+        apply();
+      }));
+      if (!chips.some((c) => c.dataset.filter === cat)) cat = 'all';
+    }
+
+    function buildChips(products: DbProduct[]) {
+      const names = [...new Set(products.map((p) => p.category))];
+      const all = `<button class="chip" type="button" data-filter="all" aria-pressed="true">All <span class="mono">${products.length}</span></button>`;
+      chipsEl.innerHTML = all + names.map((n) => `<button class="chip" type="button" data-filter="${esc(categoryKey(n))}" aria-pressed="false" style="--c:${esc(categoryColor(n))}"><i aria-hidden="true"></i>${esc(n)}</button>`).join('');
+      wireChips();
+    }
 
     function apply() {
       const term = q.value.trim().toLowerCase();
@@ -71,17 +121,38 @@ import { u } from '../../data/url';
         if (show) n++;
       });
       chips.forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.filter === cat)));
-      empty.hidden = n > 0;
+      empty.hidden = n > 0 || cards.length === 0;
       status.textContent = `${n} product${n === 1 ? '' : 's'} shown`;
     }
-    chips.forEach((c) => c.addEventListener('click', () => {
-      cat = c.dataset.filter!;
-      const url = new URL(location.href);
-      cat === 'all' ? url.searchParams.delete('c') : url.searchParams.set('c', cat);
-      history.replaceState(null, '', url);
-      apply();
-    }));
+
+    async function load() {
+      // The prebuilt snapshot stays on screen (no layout jump), dimmed while the live catalogue loads.
+      grid.classList.add('is-loading'); grid.setAttribute('aria-busy', 'true');
+      hint.style.visibility = 'visible';
+      setState(stateEl, 'none');
+      status.textContent = 'Loading the latest products…';
+      try {
+        const products = await fetchProducts();
+        if (!products.length) {
+          grid.replaceChildren(); chipsEl.replaceChildren(); cards = []; chips = []; empty.hidden = true;
+          setState(stateEl, 'empty', 'No products are listed right now. Please check back soon, or tell us what you need.');
+          return;
+        }
+        buildChips(products);
+        grid.innerHTML = products.map(cardHtml).join('');
+        cards = [...grid.querySelectorAll<HTMLElement>('.pcard')];
+        document.dispatchEvent(new CustomEvent('basket:change')); // repaint "Added" states
+        apply();
+      } catch (e) {
+        setState(stateEl, 'error', (e instanceof ApiError ? e.message : 'Products could not be loaded.') + ' Showing the saved catalogue instead.', load);
+      } finally {
+        grid.classList.remove('is-loading'); grid.removeAttribute('aria-busy');
+        hint.style.visibility = 'hidden';
+      }
+    }
     q.addEventListener('input', apply);
+    wireChips();
     apply();
+    load();
   </script>
 </Base>

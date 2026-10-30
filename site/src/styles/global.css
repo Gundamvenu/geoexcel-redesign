@@ -215,7 +215,7 @@ form.enquiry { background: var(--card); border: 1px solid var(--line); border-ra
 .field label, .field .label { font-weight: 600; font-size: .95rem; }
 .field .req { color: var(--red); }
 .field .hint { font-size: .86rem; color: var(--muted); font-weight: 400; }
-input[type='text'], input[type='email'], input[type='tel'], input[type='search'], textarea, select { width: 100%; min-height: 48px; padding: 11px 14px; border: 1.5px solid #8b8470; border-radius: 10px; background: #fff; font: 400 1rem var(--sans); color: var(--ink); }
+input[type='text'], input[type='email'], input[type='tel'], input[type='search'], input[type='password'], input:not([type]), textarea, select { width: 100%; min-height: 48px; padding: 11px 14px; border: 1.5px solid #8b8470; border-radius: 10px; background: #fff; font: 400 1rem var(--sans); color: var(--ink); }
 textarea { min-height: 130px; resize: vertical; }
 input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 3px solid var(--focus); outline-offset: 1px; }
 input[aria-invalid='true'], textarea[aria-invalid='true'] { border-color: var(--red); background: #fff6f6; }
@@ -300,3 +300,16 @@ input[aria-invalid='true'], textarea[aria-invalid='true'] { border-color: var(--
 .adder .custom { margin-top: 10px; }
 .adder .custom summary { cursor: pointer; font-weight: 600; font-size: .92rem; min-height: 44px; display: flex; align-items: center; color: var(--ink-2); }
 @media (max-width: 520px) { .adder-row .btn { flex: 1 1 100%; } }
+
+/* Loading / empty / error states for data fetched from Supabase */
+.loadstate { padding: 20px 22px; border-radius: 12px; margin: 0 0 20px; font-weight: 500; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; }
+.loadstate p { margin: 0; }
+.loadstate.loading { background: var(--paper-2); color: var(--ink-2); }
+.loadstate.loading::before { content: ''; width: 18px; height: 18px; border-radius: 50%; border: 3px solid var(--line); border-top-color: var(--orange); animation: spin .8s linear infinite; }
+.loadstate.empty { background: #e8f1fb; border: 1px solid #9fbfe6; color: #12304f; }
+.loadstate.error { background: #fdecee; border: 1px solid #e59aa1; color: #6e0010; }
+.loadstate[hidden] { display: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.grid.is-loading { opacity: .6; transition: opacity .2s; pointer-events: none; }
+.sync-hint { font: 500 .8rem var(--mono); color: var(--muted); letter-spacing: .04em; }

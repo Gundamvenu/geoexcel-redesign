@@ -1,13 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import { company } from '../data/company';
-import { products, enquiryOptions, enquiryFacts, categories } from '../data/catalog';
 import { u } from '../data/url';
-
-// Optional free form backend (Web3Forms). Without a key the form falls back to composing an email to the company address.
-const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY || '';
-// Per-product data for the enquiry lines: each product shows its own facts and offers its own choices.
-const info = Object.fromEntries(products.map((p) => [p.id, { name: p.name, cat: categories[p.category].name, facts: enquiryFacts(p), options: enquiryOptions(p) }]));
 ---
 <Base
   title="Request a quote | Enquiry"
@@ -23,10 +17,11 @@ const info = Object.fromEntries(products.map((p) => [p.id, { name: p.name, cat: 
 
   <section class="section" style="padding-top:8px">
     <div class="wrap form-wrap">
-      <form class="enquiry" id="enquiry" novalidate data-key={accessKey} data-email={company.email} data-info={JSON.stringify(info)} data-products={u('products/')}>
+      <form class="enquiry" id="enquiry" novalidate data-email={company.email}>
         <div class="basket" id="basket">
           <strong>Products in this enquiry <span class="count" data-count>0</span></strong>
           <p class="muted" style="margin:4px 0 0;font-size:.9rem">Each product has its own pack size, packaging and quantity, taken from its specification.</p>
+          <div id="load-state" class="loadstate" hidden></div>
           <div class="adder">
             <label for="add-filter"><strong>Add another product</strong></label>
             <div class="adder-row">
@@ -50,49 +45,53 @@ const info = Object.fromEntries(products.map((p) => [p.id, { name: p.name, cat: 
         <div class="row">
           <div class="field">
             <label for="name">Your name <span class="req" aria-hidden="true">*</span></label>
-            <input id="name" name="name" type="text" autocomplete="name" required aria-describedby="name-err" />
+            <input id="name" name="name" type="text" autocomplete="name" required maxlength="120" aria-describedby="name-err" />
             <span class="err" id="name-err"></span>
           </div>
           <div class="field">
             <label for="company">Company <span class="req" aria-hidden="true">*</span></label>
-            <input id="company" name="company" type="text" autocomplete="organization" required aria-describedby="company-err" />
+            <input id="company" name="company" type="text" autocomplete="organization" required maxlength="160" aria-describedby="company-err" />
             <span class="err" id="company-err"></span>
           </div>
         </div>
         <div class="row">
           <div class="field">
             <label for="email">Email <span class="req" aria-hidden="true">*</span></label>
-            <input id="email" name="email" type="email" autocomplete="email" required aria-describedby="email-err" />
+            <input id="email" name="email" type="email" autocomplete="email" required maxlength="254" aria-describedby="email-err" />
             <span class="err" id="email-err"></span>
           </div>
           <div class="field">
             <label for="phone">Phone / WhatsApp <span class="hint">(optional)</span></label>
-            <input id="phone" name="phone" type="tel" autocomplete="tel" />
+            <input id="phone" name="phone" type="tel" autocomplete="tel" maxlength="40" />
           </div>
         </div>
         <div class="row">
           <div class="field">
             <label for="country">Destination country <span class="req" aria-hidden="true">*</span></label>
-            <input id="country" name="country" type="text" autocomplete="country-name" required aria-describedby="country-err" />
+            <input id="country" name="country" type="text" autocomplete="country-name" required maxlength="80" aria-describedby="country-err" />
             <span class="err" id="country-err"></span>
           </div>
           <div class="field">
             <label for="qty">Total volume / shipment <span class="hint">(optional)</span></label>
-            <input id="qty" name="qty" type="text" placeholder="e.g. one 20 ft container" />
+            <input id="qty" name="qty" type="text" placeholder="e.g. one 20 ft container" maxlength="120" />
           </div>
         </div>
         <div class="field">
           <label for="message">Message <span class="hint">(pack size, grade, documents needed, timing)</span></label>
-          <textarea id="message" name="message"></textarea>
+          <textarea id="message" name="message" maxlength="3500"></textarea>
         </div>
-        <input class="hp" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        <!-- Honeypot: invisible to people, tempting to bots. Anything typed here makes the server discard the request silently. -->
+        <div class="hp" aria-hidden="true">
+          <label for="website">Leave this field empty</label>
+          <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
+        </div>
 
         <div>
           <button class="btn btn-primary" type="submit" id="send">Send enquiry</button>
         </div>
         <div class="status" id="status" role="status" tabindex="-1" hidden></div>
         <div id="fallback" hidden>
-          <p class="muted" style="margin:0 0 10px">If your email app did not open, copy the message and send it to <a href={`mailto:${company.email}`}>{company.email}</a>.</p>
+          <p class="muted" style="margin:0 0 10px">You can also email this to <a href={`mailto:${company.email}`}>{company.email}</a>. Copy the message below.</p>
           <textarea id="copy-text" readonly aria-label="Enquiry text to copy" style="min-height:160px"></textarea>
           <button class="btn btn-sm" type="button" id="copy" style="margin-top:10px">Copy message</button>
         </div>
@@ -112,12 +111,22 @@ const info = Object.fromEntries(products.map((p) => [p.id, { name: p.name, cat: 
 
   <script>
     import { getBasket, remove, clear, add } from '../scripts/basket';
+    import { fetchProducts, submitQuotation, ApiError, type DbProduct, type QuotationItemInput } from '../lib/api';
+    import { enquiryOptions, enquiryFacts, type EnquiryOption } from '../lib/specs';
+    import { setState } from '../lib/dom';
 
+    type Info = { id: string; name: string; cat: string; facts: [string, string][]; options: EnquiryOption[] };
     const form = document.getElementById('enquiry') as HTMLFormElement;
-    type Opt = { key: string; label: string; values: string[] };
-    type Info = { name: string; cat: string; facts: [string, string][]; options: Opt[] };
-    const info: Record<string, Info> = JSON.parse(form.dataset.info!);
-    const names: Record<string, string> = Object.fromEntries(Object.entries(info).map(([k, v]) => [k, v.name]));
+    const status = document.getElementById('status')!;
+    const fallback = document.getElementById('fallback')!;
+    const list = document.getElementById('basket-list')!;
+    const emptyMsg = document.getElementById('basket-empty')!;
+    const send = document.getElementById('send') as HTMLButtonElement;
+    const loadState = document.getElementById('load-state')!;
+
+    // Catalogue as loaded from Supabase, keyed by slug (the basket stores slugs).
+    let info: Record<string, Info> = {};
+
     // Per-product choices live in localStorage next to the basket so they survive navigation.
     const DKEY = 'geoexcel-enquiry-details';
     const loadD = (): Record<string, Record<string, string>> => { try { return JSON.parse(localStorage.getItem(DKEY) || '{}'); } catch { return {}; } };
@@ -129,14 +138,15 @@ const info = Object.fromEntries(products.map((p) => [p.id, { name: p.name, cat: 
     let customs: Custom[] = [];
     try { customs = JSON.parse(localStorage.getItem(CKEY) || '[]'); } catch { customs = []; }
     const saveC = () => { try { localStorage.setItem(CKEY, JSON.stringify(customs)); } catch { /* storage blocked */ } };
-    const status = document.getElementById('status')!;
-    const fallback = document.getElementById('fallback')!;
-    const list = document.getElementById('basket-list')!;
-    const emptyMsg = document.getElementById('basket-empty')!;
-    const send = document.getElementById('send') as HTMLButtonElement;
 
-    // ?p=id1,id2 pre-selects products (used by "Quote this product now").
-    new URLSearchParams(location.search).get('p')?.split(',').forEach((id) => { if (names[id]) add(id); });
+    const filterEl = document.getElementById('add-filter') as HTMLInputElement;
+    const selectEl = document.getElementById('add-select') as HTMLSelectElement;
+    const addStatus = document.getElementById('add-status')!;
+    const customInput = document.getElementById('add-custom') as HTMLInputElement;
+
+    function toInfo(p: DbProduct): Info {
+      return { id: p.id, name: p.name, cat: p.category, facts: enquiryFacts(p), options: enquiryOptions(p) };
+    }
 
     function drawBasket() {
       const ids = getBasket().filter((id) => info[id]);
@@ -172,7 +182,7 @@ const info = Object.fromEntries(products.map((p) => [p.id, { name: p.name, cat: 
           sel.addEventListener('change', () => { d[o.key] = sel.value; saveD(); });
           mk(o.key, o.label, sel);
         });
-        const q = document.createElement('input'); q.type = 'text'; q.placeholder = 'e.g. 25 MT'; q.value = d.qty || '';
+        const q = document.createElement('input'); q.type = 'text'; q.placeholder = 'e.g. 25 MT'; q.value = d.qty || ''; q.maxLength = 60;
         q.addEventListener('input', () => { d.qty = q.value; saveD(); });
         mk('qty', 'Quantity', q);
         li.append(fields);
@@ -196,7 +206,7 @@ const info = Object.fromEntries(products.map((p) => [p.id, { name: p.name, cat: 
       const fields = document.createElement('div'); fields.className = 'line-fields';
       const mk = (key: 'qty' | 'notes', label: string, ph: string) => {
         const wrap = document.createElement('div'); const lab = document.createElement('label'); lab.textContent = label;
-        const inp = document.createElement('input'); inp.type = 'text'; inp.placeholder = ph; inp.value = c[key]; inp.id = `f-${c.id}-${key}`; lab.htmlFor = inp.id;
+        const inp = document.createElement('input'); inp.type = 'text'; inp.placeholder = ph; inp.value = c[key]; inp.id = `f-${c.id}-${key}`; inp.maxLength = 200; lab.htmlFor = inp.id;
         inp.addEventListener('input', () => { c[key] = inp.value; saveC(); });
         wrap.append(lab, inp); fields.append(wrap);
       };
@@ -205,23 +215,20 @@ const info = Object.fromEntries(products.map((p) => [p.id, { name: p.name, cat: 
       return li;
     }
 
-    // ---- "Add another product" picker ----
-    const filterEl = document.getElementById('add-filter') as HTMLInputElement;
-    const selectEl = document.getElementById('add-select') as HTMLSelectElement;
-    const addStatus = document.getElementById('add-status')!;
+    // ---- "Add another product" picker (lists what Supabase returned) ----
     function fillPicker() {
       const have = new Set(getBasket());
       const term = filterEl.value.trim().toLowerCase();
       const groups = new Map<string, HTMLOptGroupElement>();
       selectEl.replaceChildren();
       let n = 0;
-      Object.entries(info).forEach(([id, it]) => {
-        if (have.has(id) || (term && !(it.name + ' ' + it.cat).toLowerCase().includes(term))) return;
+      Object.entries(info).forEach(([slug, it]) => {
+        if (have.has(slug) || (term && !(it.name + ' ' + it.cat).toLowerCase().includes(term))) return;
         let g = groups.get(it.cat);
         if (!g) { g = document.createElement('optgroup'); g.label = it.cat; groups.set(it.cat, g); selectEl.append(g); }
-        g.append(new Option(it.name, id)); n++;
+        g.append(new Option(it.name, slug)); n++;
       });
-      if (!n) selectEl.append(new Option(term ? 'No matching product' : 'All products added', ''));
+      if (!n) selectEl.append(new Option(Object.keys(info).length === 0 ? 'Products not loaded' : term ? 'No matching product' : 'All products added', ''));
       selectEl.disabled = n === 0;
     }
     filterEl.addEventListener('input', fillPicker);
@@ -231,13 +238,12 @@ const info = Object.fromEntries(products.map((p) => [p.id, { name: p.name, cat: 
       li?.querySelector<HTMLElement>('select, input')?.focus({ preventScroll: true });
     }
     document.getElementById('add-btn')!.addEventListener('click', () => {
-      const id = selectEl.value;
-      if (!id || !info[id]) { addStatus.textContent = 'Choose a product to add.'; filterEl.focus(); return; }
-      add(id); // triggers basket:change, which redraws the lines
-      addStatus.textContent = `${info[id].name} added to your quote.`;
-      filterEl.value = ''; fillPicker(); focusLine(id);
+      const slug = selectEl.value;
+      if (!slug || !info[slug]) { addStatus.textContent = 'Choose a product to add.'; filterEl.focus(); return; }
+      add(slug); // triggers basket:change, which redraws the lines
+      addStatus.textContent = `${info[slug].name} added to your quote.`;
+      filterEl.value = ''; fillPicker(); focusLine(slug);
     });
-    const customInput = document.getElementById('add-custom') as HTMLInputElement;
     function addCustom() {
       const name = customInput.value.trim();
       if (!name) { addStatus.textContent = 'Type a product name first.'; customInput.focus(); return; }
@@ -248,13 +254,30 @@ const info = Object.fromEntries(products.map((p) => [p.id, { name: p.name, cat: 
     document.getElementById('add-custom-btn')!.addEventListener('click', addCustom);
     customInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); addCustom(); } });
     filterEl.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); (document.getElementById('add-btn') as HTMLButtonElement).click(); } });
-
     document.addEventListener('basket:change', drawBasket);
-    drawBasket();
 
+    async function loadProducts() {
+      setState(loadState, 'loading', 'Loading products…');
+      send.disabled = true;
+      try {
+        const rows = await fetchProducts();
+        info = Object.fromEntries(rows.map((p) => [p.slug, toInfo(p)]));
+        setState(loadState, rows.length ? 'none' : 'empty', 'No products are listed right now. You can still describe what you need below.');
+        // ?p=slug1,slug2 pre-selects products (used by "Quote this product now").
+        new URLSearchParams(location.search).get('p')?.split(',').forEach((s) => { if (info[s]) add(s); });
+      } catch (e) {
+        info = {};
+        setState(loadState, 'error', (e instanceof ApiError ? e.message : 'Products could not be loaded.') + ' You can still describe what you need in the message.', loadProducts);
+      } finally {
+        send.disabled = false;
+        drawBasket();
+      }
+    }
+
+    // ---- form ----
     const field = (n: string) => form.elements.namedItem(n) as HTMLInputElement;
     const rules: Record<string, (v: string) => string> = {
-      name: (v) => (v.trim() ? '' : 'Please enter your name.'),
+      name: (v) => (v.trim().length >= 2 ? '' : 'Please enter your name.'),
       company: (v) => (v.trim() ? '' : 'Please enter your company name.'),
       email: (v) => (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) ? '' : 'Please enter a valid email address.'),
       country: (v) => (v.trim() ? '' : 'Please enter the destination country.'),
@@ -279,67 +302,74 @@ const info = Object.fromEntries(products.map((p) => [p.id, { name: p.name, cat: 
       }
     }));
 
-    function compose() {
-      const ids = getBasket().filter((id) => names[id]);
-      const v = (n: string) => field(n).value.trim();
-      const lines: string[] = ['Quote request via Geo Excel website', '', `Name: ${v('name')}`, `Company: ${v('company')}`, `Email: ${v('email')}`];
-      if (v('phone')) lines.push(`Phone: ${v('phone')}`);
-      lines.push(`Destination: ${v('country')}`);
-      if (v('qty')) lines.push(`Quantity: ${v('qty')}`);
-      lines.push('', 'Products:');
-      if (!ids.length && !customs.length) lines.push('- (none selected)');
-      ids.forEach((id) => {
-        const it = info[id]; const d = details[id] || {};
-        const hs = it.facts.find(([k]) => k === 'HS code');
-        lines.push(`- ${it.name}${hs ? ` (HS ${hs[1]})` : ''}`);
+    const numberOf = (t: string) => { const n = parseFloat(t.replace(/,/g, '')); return Number.isFinite(n) && n > 0 && n <= 1e9 ? n : null; };
+
+    function buildItems(): QuotationItemInput[] {
+      const items: QuotationItemInput[] = [];
+      getBasket().filter((id) => info[id]).forEach((slug) => {
+        const it = info[slug]; const d = details[slug] || {};
         const picks = it.options.filter((o) => d[o.key]).map((o) => `${o.label}: ${d[o.key]}`);
-        if (d.qty?.trim()) picks.push(`Quantity: ${d.qty.trim()}`);
-        if (picks.length) lines.push(`    ${picks.join(' | ')}`);
+        const qty = (d.qty || '').trim();
+        if (qty) picks.push(`Quantity: ${qty}`);
+        items.push({ product_id: it.id, quantity: qty ? numberOf(qty) : null, note: picks.join(' | ').slice(0, 500) || null });
       });
       customs.forEach((c) => {
-        lines.push(`- ${c.name} (not in catalogue)`);
-        const picks = [c.qty.trim() && `Quantity: ${c.qty.trim()}`, c.notes.trim() && `Notes: ${c.notes.trim()}`].filter(Boolean);
-        if (picks.length) lines.push(`    ${picks.join(' | ')}`);
+        const qty = c.qty.trim();
+        const picks = [qty && `Quantity: ${qty}`, c.notes.trim() && `Notes: ${c.notes.trim()}`].filter(Boolean) as string[];
+        items.push({ product_id: null, product_name: c.name, quantity: qty ? numberOf(qty) : null, note: picks.join(' | ').slice(0, 500) || null });
       });
+      return items;
+    }
+
+    // The same request as plain text, for the copy/email fallback if the server cannot be reached.
+    function compose(items: QuotationItemInput[]) {
+      const v = (n: string) => field(n).value.trim();
+      const names = new Map(Object.values(info).map((i) => [i.id, i.name]));
+      const lines = ['Quote request via Geo Excel website', '', `Name: ${v('name')}`, `Company: ${v('company')}`, `Email: ${v('email')}`];
+      if (v('phone')) lines.push(`Phone: ${v('phone')}`);
+      lines.push(`Destination: ${v('country')}`);
+      if (v('qty')) lines.push(`Total volume: ${v('qty')}`);
+      lines.push('', 'Products:');
+      if (!items.length) lines.push('- (none selected)');
+      items.forEach((i) => { lines.push(`- ${(i.product_id && names.get(i.product_id)) || i.product_name || 'Product'}`); if (i.note) lines.push(`    ${i.note}`); });
       if (v('message')) lines.push('', 'Message:', v('message'));
       return lines.join('\n');
     }
 
-    function show(kind: 'ok' | 'info' | 'bad', text: string) {
+    function show(kind: 'ok' | 'info' | 'bad', text: string, bold = '') {
       status.className = `status ${kind}`;
-      status.textContent = text;
+      status.replaceChildren(document.createTextNode(text));
+      if (bold) { const b = document.createElement('strong'); b.textContent = bold; b.style.cssText = 'display:block;font-size:1.4rem;margin-top:6px;letter-spacing:.04em'; status.append(b); }
       status.hidden = false;
       status.focus();
     }
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      if ((field('botcheck') as HTMLInputElement).checked) return; // honeypot
       if (!validate()) return;
-      const text = compose();
-      const key = form.dataset.key;
-      const to = form.dataset.email!;
-      const subject = `Quote request from ${field('company').value.trim()}`;
-      if (key) {
-        send.disabled = true; send.textContent = 'Sending…';
-        try {
-          const res = await fetch('https://api.web3forms.com/submit', {
-            method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-            body: JSON.stringify({ access_key: key, subject, from_name: field('name').value.trim(), email: field('email').value.trim(), message: text }),
-          });
-          const data = await res.json();
-          if (!res.ok || !data.success) throw new Error(data.message || 'Send failed');
-          show('ok', 'Thank you. Your enquiry has been sent.');
-          clear(); details = {}; saveD(); customs = []; saveC(); drawBasket(); form.reset(); fallback.hidden = true;
-        } catch {
-          show('bad', `We could not send the enquiry from this page. Please email ${to} using the message below.`);
-          (document.getElementById('copy-text') as HTMLTextAreaElement).value = text; fallback.hidden = false;
-        } finally { send.disabled = false; send.textContent = 'Send enquiry'; }
-      } else {
-        (document.getElementById('copy-text') as HTMLTextAreaElement).value = text;
-        fallback.hidden = false;
-        show('info', `Opening your email app with the enquiry addressed to ${to}. If nothing opens, copy the message below.`);
-        location.href = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}`;
+      fallback.hidden = true;
+      const items = buildItems();
+      const volume = field('qty').value.trim();
+      const message = [field('message').value.trim(), volume && `Total volume / shipment: ${volume}`].filter(Boolean).join('\n\n').slice(0, 4000);
+      send.disabled = true; send.textContent = 'Sending…';
+      try {
+        const ref = await submitQuotation({
+          name: field('name').value.trim(), company: field('company').value.trim(), email: field('email').value.trim(),
+          phone: field('phone').value.trim(), country: field('country').value.trim(), message, items, website: field('website').value,
+        });
+        show('ok', 'Thank you. Your quotation request has been recorded. Your reference is:', ref);
+        clear(); details = {}; saveD(); customs = []; saveC(); drawBasket(); form.reset();
+      } catch (err) {
+        const ae = err instanceof ApiError ? err : null;
+        if (ae && (ae.kind === 'invalid' || ae.kind === 'rate')) {
+          show('bad', ae.message.charAt(0).toUpperCase() + ae.message.slice(1) + (/[.!?]$/.test(ae.message) ? '' : '.'));
+        } else {
+          show('bad', `${ae?.message ?? 'We could not send your request.'} Nothing was lost: you can email it to ${form.dataset.email} using the text below.`);
+          (document.getElementById('copy-text') as HTMLTextAreaElement).value = compose(items);
+          fallback.hidden = false;
+        }
+      } finally {
+        send.disabled = false; send.textContent = 'Send enquiry';
       }
     });
 
@@ -347,5 +377,8 @@ const info = Object.fromEntries(products.map((p) => [p.id, { name: p.name, cat: 
       const ta = document.getElementById('copy-text') as HTMLTextAreaElement;
       try { await navigator.clipboard.writeText(ta.value); show('ok', 'Message copied.'); } catch { ta.select(); show('info', 'Press Ctrl+C to copy the selected message.'); }
     });
+
+    drawBasket();
+    loadProducts();
   </script>
 </Base>

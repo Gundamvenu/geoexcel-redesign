@@ -5,8 +5,8 @@ import { u, stripBase } from '../data/url';
 import frauncesUrl from '@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2?url';
 import sansUrl from '@fontsource-variable/instrument-sans/files/instrument-sans-latin-wght-normal.woff2?url';
 
-interface Props { title: string; description: string; image?: string; type?: string; jsonLd?: object }
-const { title, description, image = 'og.png', type = 'website', jsonLd } = Astro.props;
+interface Props { title: string; description: string; image?: string; type?: string; jsonLd?: object; noindex?: boolean }
+const { title, description, image = 'og.png', type = 'website', jsonLd, noindex = false } = Astro.props;
 const path = stripBase(Astro.url.pathname);
 const fullTitle = title.includes('Geo Excel') ? title : `${title} | Geo Excel`;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
@@ -27,6 +27,7 @@ const isActive = (h: string) => (h === '' ? path === '/' : path.startsWith('/' +
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="canonical" href={canonical} />
     <link rel="preload" href={frauncesUrl} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={sansUrl} as="font" type="font/woff2" crossorigin />
