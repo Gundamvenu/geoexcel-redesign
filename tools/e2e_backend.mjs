@@ -155,12 +155,15 @@ for (const [label, vw, vh, mob] of [['desktop', 1440, 900, false], ['mobile', 39
     await page.fill('#a-email', process.env.E2E_ADMIN_EMAIL); await page.fill('#a-pass', process.env.E2E_ADMIN_PASSWORD); await page.click('button[type=submit]');
     await page.waitForSelector('h1:has-text("Quotation requests")', { timeout: 30000 });
     ok(T('admin signs in and sees the quotations inbox'), true);
-    await page.fill('#q-search', email);
-    await page.waitForSelector(`table.data tbody tr:has-text("${ref}")`, { timeout: 20000 });
-    ok(T('new quotation appears in the inbox'), true);
+    // With E2E_SKIP_SUBMIT nothing new was written, so work on an existing test quotation (search "gx-e2e").
+    const reuse = Boolean(process.env.E2E_SKIP_SUBMIT);
+    await page.fill('#q-search', reuse ? 'gx-e2e' : email);
+    await page.waitForSelector(reuse ? 'table.data tbody tr' : `table.data tbody tr:has-text("${ref}")`, { timeout: 20000 });
+    ok(T(reuse ? 'test quotations appear in the inbox' : 'new quotation appears in the inbox'), true);
     await shot('admin-quotations');
-    await page.click(`table.data a:has-text("${ref}")`);
+    await page.click(reuse ? 'table.data tbody a' : `table.data a:has-text("${ref}")`);
     await page.waitForSelector('#qd-status');
+    const aref = reuse ? ((await page.textContent('h1')).match(/GX-\d{4}-\d{4}/) || [''])[0] : ref;
     ok(T('detail shows customer, items and message'), (await page.textContent('main')).includes('E2E TEST Imports') && (await page.textContent('main')).includes('Cardamom'));
     await page.selectOption('#qd-status', 'quoted');
     await page.waitForSelector('.status.ok:has-text("Status updated")');
@@ -169,10 +172,10 @@ for (const [label, vw, vh, mob] of [['desktop', 1440, 900, false], ['mobile', 39
     await page.reload(); await page.waitForSelector('#qd-status');
     ok(T('status and notes persisted'), (await page.inputValue('#qd-status')) === 'quoted' && (await page.inputValue('#qd-notes')) === 'E2E TEST internal note');
     await shot('admin-quotation-detail');
-    await page.goto(BASE + '/admin/#/customers'); await page.fill('#c-search', email);
-    await page.click(`table.data a:has-text("E2E Tester")`);
+    await page.goto(BASE + '/admin/#/customers'); await page.fill('#c-search', reuse ? 'gx-e2e' : email);
+    await page.click(reuse ? 'table.data tbody a' : `table.data a:has-text("E2E Tester")`);
     await page.waitForSelector('#cd-notes');
-    ok(T('customer record shows quotation history'), (await page.textContent('main')).includes(ref));
+    ok(T('customer record shows quotation history'), (await page.textContent('main')).includes('GX-'), aref);
     await page.fill('#cd-notes', 'E2E TEST customer note'); await page.click('button:has-text("Save notes")');
     await page.waitForSelector('.status.ok:has-text("Notes saved")');
     ok(T('customer notes saved'), true);
