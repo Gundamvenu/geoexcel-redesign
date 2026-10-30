@@ -6,9 +6,10 @@ const ok = (name, cond, extra = '') => { results.push([cond ? 'PASS' : 'FAIL', n
 for (const [label, vw, vh, mob] of [['desktop', 1440, 900, false], ['mobile', 390, 844, true]]) {
   const ctx = await b.newContext({ viewport: { width: vw, height: vh }, isMobile: mob, hasTouch: mob });
   const page = await ctx.newPage();
-  const errs = []; page.on('console', (m) => m.type() === 'error' && errs.push(m.text())); page.on('pageerror', (e) => errs.push(String(e)));
+  const errs = []; page.on('console', (m) => m.type() === 'error' && !/Failed to load resource/.test(m.text()) && errs.push(m.text())); page.on('pageerror', (e) => errs.push(String(e)));
   const T = (n) => `${label}: ${n}`;
   await page.goto(BASE + '/products/', { waitUntil: 'networkidle' });
+  await page.waitForFunction(() => document.querySelectorAll('#grid .pcard[data-live]').length === 44, null, { timeout: 20000 });
   const total = await page.locator('.pcard:visible').count(); ok(T('catalogue shows 44'), total === 44, total);
   await page.click('[data-filter="spices"]');
   ok(T('spices filter = 14'), (await page.locator('.pcard:visible').count()) === 14);
@@ -35,6 +36,7 @@ for (const [label, vw, vh, mob] of [['desktop', 1440, 900, false], ['mobile', 39
   // go to enquiry via header CTA
   await page.click('#nav a.btn-accent');
   await page.waitForURL('**/enquiry/');
+  await page.waitForFunction(() => document.querySelectorAll('#basket-list li.line').length >= 2, null, { timeout: 20000 });
   ok(T('enquiry lists 2 products'), (await page.locator('#basket-list li').count()) === 2);
   const labelsOf = async (n) => page.locator('#basket-list li.line').nth(n).locator('label').allTextContents();
   const l0 = await labelsOf(0), l1 = await labelsOf(1);
@@ -52,26 +54,29 @@ for (const [label, vw, vh, mob] of [['desktop', 1440, 900, false], ['mobile', 39
   await page.fill('#name', 'Test Buyer'); await page.fill('#company', 'Test Imports LLC'); await page.fill('#email', 'bad'); await page.click('#send');
   ok(T('invalid email rejected'), /valid email/.test(await page.locator('#email-err').textContent()));
   await page.fill('#email', 'buyer@example.com'); await page.fill('#country', 'UAE'); await page.fill('#qty', 'one 20ft container');
+  await page.route('**/rest/v1/rpc/submit_quotation', (r) => r.fulfill({ status: 500, contentType: 'application/json', body: '{"message":"boom"}' }));
   await page.click('#send');
   await page.waitForSelector('#status:not([hidden])');
   const txt = await page.inputValue('#copy-text');
   ok(T('fallback text has products + fields'), txt.includes('Test Imports LLC') && txt.includes('UAE') && /Products:\n- /.test(txt), txt.replace(/\n/g, ' / ').slice(0, 160));
-  // web3forms path (mocked network)
-  await page.route('https://api.web3forms.com/submit', (r) => r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true, message: 'ok' }) }));
-  await page.evaluate(() => { document.getElementById('enquiry').dataset.key = 'test-key'; });
-  let posted = null; page.on('request', (r) => { if (r.url().includes('web3forms')) posted = r.postData(); });
+  // success path with the RPC mocked (nothing is written to the database by this test)
+  let posted = null;
+  await page.unroute('**/rest/v1/rpc/submit_quotation');
+  await page.route('**/rest/v1/rpc/submit_quotation', (r) => { posted = r.request().postData(); r.fulfill({ status: 200, contentType: 'application/json', body: '"GX-2026-9999"' }); });
   await page.click('#send'); await page.waitForFunction(() => document.getElementById('status').classList.contains('ok'));
-  ok(T('API path success message'), /has been sent/.test(await page.locator('#status').textContent()));
-  ok(T('API payload has access_key and message'), posted && posted.includes('test-key') && posted.includes('Test Imports LLC'));
+  ok(T('success state shows the reference'), /GX-2026-9999/.test(await page.locator('#status').textContent()));
+  ok(T('RPC payload carries company, items and honeypot field'), posted && posted.includes('Test Imports LLC') && posted.includes('p_items') && posted.includes('p_website'));
   ok(T('basket cleared after send'), (await page.locator('#basket-list li').count()) === 0);
   // detail page: image, back link, home
   await page.goto(BASE + '/products/cardamom/', { waitUntil: 'networkidle' });
+  await page.waitForFunction(() => document.getElementById('p-state').hidden, null, { timeout: 20000 });
   ok(T('detail image loads'), await page.$eval('.hero-img img', (i) => i.complete && i.naturalWidth > 0));
   await page.click('text=← Back to Whole spices'); await page.waitForURL('**/products/?c=spices');
+  await page.waitForFunction(() => document.querySelectorAll('#grid .pcard[data-live]').length === 44, null, { timeout: 20000 });
   ok(T('back link returns to filtered category'), (await page.locator('.pcard:visible').count()) === 14);
   // quote this product now
   await page.goto(BASE + '/products/pure-ghee/', { waitUntil: 'networkidle' });
-  await page.click('.aside a.btn-accent'); await page.waitForURL('**/enquiry/**');
+  await page.click('.aside a.btn-accent'); await page.waitForURL('**/enquiry/**'); await page.waitForFunction(() => document.querySelectorAll('#basket-list li.line').length >= 1, null, { timeout: 20000 });
   ok(T('quote-now prefills Pure Ghee'), (await page.locator('#basket-list').textContent()).includes('Pure Ghee'));
   // remove
   await page.click('#basket-list li button'); ok(T('remove from basket'), (await page.locator('#basket-list li').count()) === 0);

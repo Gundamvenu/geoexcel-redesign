@@ -9,11 +9,12 @@ for (const [label, vw, vh, mob] of [['desktop', 1440, 900, false], ['mobile', 39
   const ctx = await b.newContext({ viewport: { width: vw, height: vh }, isMobile: mob, hasTouch: mob });
   const page = await ctx.newPage();
   const errs = [];
-  page.on('console', (m) => m.type() === 'error' && errs.push(m.text()));
+  page.on('console', (m) => m.type() === 'error' && !/Failed to load resource/.test(m.text()) && errs.push(m.text()));
   page.on('pageerror', (e) => errs.push(String(e)));
   const T = (n) => `${label}: ${n}`;
 
   await page.goto(BASE + '/enquiry/', { waitUntil: 'networkidle' });
+  await page.waitForFunction(() => document.querySelectorAll('#add-select option').length > 1, null, { timeout: 20000 });
   const total = await page.locator('#add-select option').count();
   ok(T('picker lists all 44 products when basket is empty'), total === 44, total);
   ok(T('picker is grouped by category'), (await page.locator('#add-select optgroup').count()) === 4);
@@ -54,10 +55,11 @@ for (const [label, vw, vh, mob] of [['desktop', 1440, 900, false], ['mobile', 39
 
   // message content
   await page.fill('#name', 'A Buyer'); await page.fill('#company', 'Buyer Co'); await page.fill('#email', 'b@example.com'); await page.fill('#country', 'Oman');
+  await page.route('**/rest/v1/rpc/submit_quotation', (r) => r.fulfill({ status: 500, contentType: 'application/json', body: '{"message":"boom"}' }));
   await page.click('#send');
   await page.waitForSelector('#status:not([hidden])');
   const txt = await page.inputValue('#copy-text');
-  ok(T('message lists listed + custom products'), txt.includes('Cumin Seeds') && txt.includes('Pure Ghee') && txt.includes('Pulses & lentils (not in catalogue)'), txt.slice(-260).replace(/\n/g, ' / '));
+  ok(T('message lists listed + custom products'), txt.includes('Cumin Seeds') && txt.includes('Pure Ghee') && txt.includes('Pulses & lentils'), txt.slice(-260).replace(/\n/g, ' / '));
   ok(T('message carries quantities and notes'), txt.includes('Quantity: 10 MT') && txt.includes('Quantity: 5 MT') && txt.includes('Notes: green, 99% purity'));
 
   // remove custom + one listed

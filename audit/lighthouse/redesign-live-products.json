@@ -1,0 +1,51 @@
+{
+ "mobile": {
+  "scores": {
+   "performance": 98,
+   "accessibility": 100,
+   "best-practices": 100,
+   "seo": 100
+  },
+  "metrics": {
+   "first-contentful-paint": "1.1 s",
+   "largest-contentful-paint": "2.2 s",
+   "total-blocking-time": "80 ms",
+   "cumulative-layout-shift": "0",
+   "speed-index": "2.1 s"
+  },
+  "failed": [
+   "max-potential-fid: Max Potential First Input Delay",
+   "cache-insight: Use efficient cache lifetimes",
+   "image-delivery-insight: Improve image delivery",
+   "network-dependency-tree-insight: Network dependency tree",
+   "render-blocking-insight: Render-blocking requests"
+  ]
+ },
+ "desktop": {
+  "scores": {
+   "performance": 89,
+   "accessibility": 100,
+   "best-practices": 100,
+   "seo": 100
+  },
+  "metrics": {
+   "first-contentful-paint": "1.3 s",
+   "largest-contentful-paint": "1.5 s",
+   "total-blocking-time": "120 ms",
+   "cumulative-layout-shift": "0",
+   "speed-index": "1.3 s"
+  },
+  "failed": [
+   "first-contentful-paint: First Contentful Paint",
+   "largest-contentful-paint: Largest Contentful Paint",
+   "speed-index: Speed Index",
+   "max-potential-fid: Max Potential First Input Delay",
+   "mainthread-work-breakdown: Minimize main-thread work",
+   "bootup-time: Reduce JavaScript execution time",
+   "cache-insight: Use efficient cache lifetimes",
+   "image-delivery-insight: Improve image delivery",
+   "network-dependency-tree-insight: Network dependency tree",
+   "render-blocking-insight: Render-blocking requests"
+  ]
+ }
+}

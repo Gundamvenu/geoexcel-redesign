@@ -1,0 +1,47 @@
+{
+ "mobile": {
+  "scores": {
+   "performance": 98,
+   "accessibility": 100,
+   "best-practices": 100,
+   "seo": 100
+  },
+  "metrics": {
+   "first-contentful-paint": "1.0 s",
+   "largest-contentful-paint": "2.2 s",
+   "total-blocking-time": "90 ms",
+   "cumulative-layout-shift": "0",
+   "speed-index": "1.8 s"
+  },
+  "failed": [
+   "max-potential-fid: Max Potential First Input Delay",
+   "bf-cache: Page prevented back/forward cache restoration",
+   "image-delivery-insight: Improve image delivery",
+   "lcp-discovery-insight: LCP request discovery",
+   "network-dependency-tree-insight: Network dependency tree",
+   "render-blocking-insight: Render-blocking requests"
+  ]
+ },
+ "desktop": {
+  "scores": {
+   "performance": 87,
+   "accessibility": 100,
+   "best-practices": 100,
+   "seo": 100
+  },
+  "metrics": {
+   "first-contentful-paint": "0.9 s",
+   "largest-contentful-paint": "2.1 s",
+   "total-blocking-time": "120 ms",
+   "cumulative-layout-shift": "0",
+   "speed-index": "1.0 s"
+  },
+  "failed": [
+   "largest-contentful-paint: Largest Contentful Paint",
+   "max-potential-fid: Max Potential First Input Delay",
+   "image-delivery-insight: Improve image delivery",
+   "network-dependency-tree-insight: Network dependency tree",
+   "render-blocking-insight: Render-blocking requests"
+  ]
+ }
+}
