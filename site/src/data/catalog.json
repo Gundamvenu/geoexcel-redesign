@@ -1,0 +1,768 @@
+{
+ "categories": {
+  "rice": {
+   "name": "Rice",
+   "blurb": "Basmati, parboiled and regional non-basmati rice, sortexed, in 5–50 kg packs."
+  },
+  "spices": {
+   "name": "Whole spices",
+   "blurb": "Whole spices and seeds from Kerala, Karnataka and beyond, packed 1–50 kg."
+  },
+  "iqf": {
+   "name": "IQF frozen vegetables & potato",
+   "blurb": "Individually quick frozen vegetables and potato products, stored at −18 °C."
+  },
+  "oils": {
+   "name": "Edible oils & ghee",
+   "blurb": "Cold-pressed oils and ghee in bottles, cans and drums."
+  }
+ },
+ "products": [
+  {
+   "id": "1121-basmati-steam-rice",
+   "category": "rice",
+   "name": "1121 Basmati Steam Rice",
+   "about": "Basmati 1121 Steam Rice is widely consumed across the world to prepare several types of cuisines.",
+   "specs": {
+    "Variety": "Extra Long-Grain Rice",
+    "Region": "Punjab",
+    "Country of origin": "India",
+    "Colour": "Creamy",
+    "Polish": "Fully Polished",
+    "Texture": "Hard",
+    "Broken": "0.25%",
+    "Moisture": "12%",
+    "Pack size": "20 Kg, 10 Kg, 25 Kg, 5kg",
+    "Packaging type": "Plastic Sack Bag, Jute Bag, PP Bag, Plastic Bag",
+    "Features": "Delectable Taste, Uniform size, Distinct Aroma",
+    "Speciality": "No Artificial Flavour, No Preservatives",
+    "HS code": "10063020"
+   },
+   "note": "Premium Quality Extra Long Grain 1121 Basmati Steam Rice, 100% sortexed pure quality with average grain length 8.35 mm, broken under 0.25%, moisture 12% deliver best cooking results."
+  },
+  {
+   "id": "1121-basmati-sella-rice",
+   "category": "rice",
+   "name": "1121 Basmati Sella Rice",
+   "about": "Basmati 1121 Sella Rice is widely consumed across the world to prepare several types of cuisines.",
+   "specs": {
+    "Variety": "Extra Long-Grain Rice",
+    "Region": "Punjab",
+    "Country of origin": "India",
+    "Colour": "Creamy White",
+    "Polish": "Fully Polished",
+    "Texture": "Hard",
+    "Broken": "0.25%",
+    "Moisture": "14%",
+    "Pack size": "20 Kg, 10 Kg, 25 Kg, 5kg",
+    "Packaging type": "Plastic Sack Bag, Jute Bag, PP Bag, Plastic Bag",
+    "Features": "Nutritious and Healthy, Low Crabs.",
+    "Speciality": "No Artificial Flavour, No Preservatives",
+    "HS code": "10063020"
+   },
+   "note": "We are offering high quality 1121 Basmati Sella Rice from India. Specification: Average length: Above 8.35 mm, Broken: under 0.25%, Color: No added coloring matter, Paddy Grains: NIL, Moisture: 13.5.0% maximum, Sortex Clean quality free from any foreign material, live or dead weevils, stone etc."
+  },
+  {
+   "id": "1121-basmati-goldeni-sella-rice",
+   "category": "rice",
+   "name": "1121 Basmati Goldeni Sella Rice",
+   "about": "Golden Sella 1121 Basmati Rice is highly appreciated due to its long grains, rich aroma and splendid taste. This rice is used for preparing several cuisines such as Biryani, Pulao, Fried Rice, etc.",
+   "specs": {
+    "Variety": "Extra Long-Grain Rice",
+    "Region": "Punjab",
+    "Country of origin": "India",
+    "Colour": "Golden",
+    "Polish": "Fully Polished",
+    "Texture": "Hard",
+    "Broken": "0.25%",
+    "Moisture": "14%",
+    "Pack size": "20 Kg, 10 Kg, 25 Kg, 5kg",
+    "Packaging type": "Plastic Sack Bag, Jute Bag, PP Bag, Plastic Bag",
+    "Features": "Good Taste and Healthy",
+    "Speciality": "No Artificial Flavour, No Preservatives",
+    "HS code": "10063020"
+   },
+   "note": "India, AGL: 8.35 mm, Moisture: 13% max., Broken: 0.5%, Foreign Matter: 0.25% (maximum), Goldenness: 38-40 KETT, Paddy Grains: Nil, Red Streak: Nil, Color: dark Golden, Grain: Long, thin and slender."
+  },
+  {
+   "id": "1401-pusa-basmati-steam-rice",
+   "category": "rice",
+   "name": "1401 Pusa Basmati Steam Rice",
+   "about": "Pusa 1401 Basmati Steam Rice Polished Sortex Rice of current year. Also available in Parboiled (sella) rice. Pusa 1401 Basmati Steam Rice",
+   "specs": {
+    "Variety": "Long-Grain Rice",
+    "Region": "Punjab",
+    "Country of origin": "India",
+    "Colour": "Creamy White",
+    "Polish": "Fully Polished",
+    "Texture": "Hard",
+    "Broken": "0.25%",
+    "Moisture": "14%",
+    "Pack size": "20 Kg, 10 Kg, 25 Kg, 5kg",
+    "Packaging type": "Plastic Sack Bag, Jute Bag, PP Bag, Plastic Bag",
+    "Features": "Nutritious and Healthy, Low Crabs.",
+    "Speciality": "Pure 1401 Basmati rice.",
+    "HS code": "10063020"
+   },
+   "note": "Moisture: 12% max., Avg. length before cooking: 7.8 mm, Broken : Nil, Length to Breadth Ratio : 4.5 or above, Damaged & Discoloured Grains: Nil,Paddy Grain: Nil, Black grains: Nil, Origin: India,Aroma : Contains marked degree of natural aroma both in raw and cooked state,Sortex clean quality, free from any foreign material and live or dead weevils, stones etc."
+  },
+  {
+   "id": "pr-11-steam-long-grain-rice",
+   "category": "rice",
+   "name": "PR 11 Steam Long Grain Rice",
+   "about": "Non Basmati Rice",
+   "specs": {
+    "Variety": "Long-Grain Rice",
+    "Region": "Punjab",
+    "Country of origin": "India",
+    "Colour": "Creamy White",
+    "Polish": "Fully Polished",
+    "Texture": "Hard",
+    "Broken": "1.00%",
+    "Moisture": "12%",
+    "Pack size": "20 Kg, 10 Kg, 25 Kg, 5kg",
+    "Packaging type": "Plastic Sack Bag, Jute Bag, PP Bag, Plastic Bag",
+    "HS code": "10063020"
+   },
+   "note": "Best Quality PR-11 Steam long Grain rice, AGL 6.85 mm, Broken under 1%. Moisture 12%, sortexed quality. Beat Quality PR-11 Rice also Known as Biryani Rice"
+  },
+  {
+   "id": "1509-basmati-sella-rice",
+   "category": "rice",
+   "name": "1509 Basmati Sella Rice",
+   "about": "We supply 1509 Basmati sella rice, best premium quality of Punjab having XXXL grain with best cooking.",
+   "specs": {
+    "Variety": "Extra Long-Grain Rice",
+    "Region": "Punjab",
+    "Country of origin": "India",
+    "Colour": "Creamy White",
+    "Polish": "Fully Polished",
+    "Texture": "Hard",
+    "Broken": "0.50%",
+    "Moisture": "13%",
+    "Pack size": "20 Kg, 10 Kg, 25 Kg, 5kg",
+    "Packaging type": "Plastic Sack Bag, Jute Bag, PP Bag, Plastic Bag",
+    "Speciality": "Pure 1509 Basmati rice.",
+    "HS code": "10063020"
+   },
+   "note": "Average grain length- 8.4 mm Broken: under 0.5% Moisture: 11%, Free from any impurities"
+  },
+  {
+   "id": "ir-64-rice",
+   "category": "rice",
+   "name": "IR 64 Rice",
+   "about": "Par Boiled Rice",
+   "specs": {
+    "Variety": "Long-Grain Rice",
+    "Region": "Andhra, Chattisgarg, Gujarat",
+    "Country of origin": "India",
+    "Colour": "White",
+    "Polish": "Fully Polished",
+    "Texture": "Hard",
+    "Broken": "5.00%",
+    "Moisture": "14%",
+    "Pack size": "26Kgs, 50Kgs",
+    "Packaging type": "PP Bag, Plastic Bag",
+    "Speciality": "Parboiled",
+    "HS code": "10063020"
+   },
+   "note": "IR 64 Sella/Parboiled Rice having average grain length 5.9 mm, broken under 5%, moisture under 14%, 100% sortexed premium quality deliver good cooking result."
+  },
+  {
+   "id": "sona-masuri-steam-rice",
+   "category": "rice",
+   "name": "Sona Masuri Steam Rice",
+   "about": "Premium quality Sona Masuri Steam Rice. Our offered Sona Masuri Steam Rice is processed under the strict supervision of our dexterous professionals in order to satisfy the demands.Rice is packed in safe packaging material to prevent it from dust, moisture and germs while transportation.",
+   "specs": {
+    "Variety": "Short grain",
+    "Region": "Karnataka, Andhra",
+    "Country of origin": "India",
+    "Colour": "Creamy White",
+    "Polish": "Fully Polished",
+    "Texture": "Hard",
+    "Broken": "5.00%",
+    "Moisture": "14%",
+    "Pack size": "26Kgs, 50Kgs",
+    "Packaging type": "PP Bag, Plastic Bag",
+    "Speciality": "100% Sortex Rice",
+    "HS code": "10063020"
+   },
+   "note": "Aromatic flavour, rich taste ,longer shelf life, 100% sortexed quality, best cooking result"
+  },
+  {
+   "id": "1509-basmati-steam",
+   "category": "rice",
+   "name": "1509 Basmati Steam",
+   "about": "We supply 1509 Basmati steam rice, best premium quality of Punjab having XXXL grain with best cooking.",
+   "specs": {
+    "Variety": "Extra Long-Grain Rice",
+    "Region": "Punjab",
+    "Colour": "Creamy White",
+    "Polish": "Fully Polished",
+    "Texture": "Hard",
+    "Broken": "0.50%",
+    "Moisture": "11%",
+    "Pack size": "20 Kg, 10 Kg, 25 Kg, 5kg",
+    "Packaging type": "Plastic Sack Bag, Jute Bag, PP Bag, Plastic Bag",
+    "Speciality": "Pure 1509 Basmati rice.",
+    "HS code": "10063020"
+   },
+   "note": "Average grain length- 8.4 mm Broken: under 0.5% Moisture: 11%, Free from any impurities"
+  },
+  {
+   "id": "ponni-rice",
+   "category": "rice",
+   "name": "Ponni Rice",
+   "about": "Rice comes from the Tamil Nadu region of Tanjavur",
+   "specs": {
+    "Variety": "Short grain",
+    "Region": "Tamil Nadu",
+    "Country of origin": "India",
+    "Colour": "Creamy White",
+    "Polish": "Fully Polished",
+    "Texture": "Hard",
+    "Broken": "5.00%",
+    "Moisture": "14%",
+    "Pack size": "5kg,26Kgs, 50Kgs",
+    "Packaging type": "PP Bag, Plastic Bag",
+    "Speciality": "100% Sortex Rice",
+    "HS code": "10063020"
+   },
+   "note": "Long shelf life, natural fragrance, enriched with nutrition, 100% sortexed quality"
+  },
+  {
+   "id": "jeerakasala-rice",
+   "category": "rice",
+   "name": "Jeerakasala Rice",
+   "about": "Rice comes from parts of Bengal and Orissa. We are providing a premium quality Jeerakasala Rice in market. The rice we provide is easy consume, simple to cook, highly and nutritious , as it is cultivated at fertile farm with the use of top quality seeds, fertilizers, manure and various other input factors. King of all Biryani rice, it is mainly demanded in houses, hotels, canteens,and various eateries for the preparation of various dishes such as Pulao, Biryani, Kheer, etc",
+   "specs": {
+    "Variety": "Short grain",
+    "Region": "Bengal & Orissa",
+    "Country of origin": "India",
+    "Colour": "White",
+    "Polish": "Fully Polished",
+    "Texture": "Hard",
+    "Broken": "5.00%",
+    "Moisture": "11%",
+    "Pack size": "5kg,26Kgs, 50Kgs",
+    "Packaging type": "PP Bag, Plastic Bag",
+    "Speciality": "100% Sortex Rice",
+    "HS code": "10063020"
+   },
+   "note": ""
+  },
+  {
+   "id": "palakaddan-matta-rice-unda",
+   "category": "rice",
+   "name": "Palakaddan Matta Rice (unda)",
+   "about": "Cultivated in Kerala and widly consumed in most parts of south India.",
+   "specs": {
+    "Variety": "Short grain",
+    "Region": "Kerala",
+    "Country of origin": "India",
+    "Colour": "Golden",
+    "Polish": "Fully Polished",
+    "Texture": "Hard",
+    "Broken": "5.00%",
+    "Moisture": "11%",
+    "Pack size": "5kg,26Kgs, 50Kgs",
+    "Packaging type": "AvailablePP Bag, Plastic Bag",
+    "Speciality": "100% Sortex Rice",
+    "HS code": "10063020"
+   },
+   "note": ""
+  },
+  {
+   "id": "cardamom",
+   "category": "spices",
+   "name": "Cardamom",
+   "about": "Our offered range of best quality Green Cardamom is grown and processed under hygienic conditions by the experts. Cardamom is extensively used in various food industries for adding flavor to the dishes and providing an aromatic taste to the culinary. We offer this range in high quality packaging material to retain their original characteristics and taste in the original form. Clients can avail this range in varied quantities as per their particular requirement",
+   "specs": {
+    "Region": "Kerala",
+    "Country of origin": "India",
+    "Sizes": "6-7mm | 7-8mm | 7-8mm split |8mm bold | 5-6mm",
+    "Pack size": "1Kg",
+    "HS code": "09083120"
+   },
+   "note": ""
+  },
+  {
+   "id": "black-peppercorn",
+   "category": "spices",
+   "name": "Black Peppercorn",
+   "about": "Our offered range of best quality Black Peppercorn is grown and processed under hygienic conditions by the experts Sourced from parts of Karnataka and Kerala Packaging size1Kg, 5Kgs, 25Kgs, 50Kgs",
+   "specs": {
+    "Grade": "Bold , Farm Fresh",
+    "Region": "Kerala, Karnataka",
+    "Country of origin": "India",
+    "Moisture": "5%",
+    "Extraneous matter": "0.50%",
+    "Light berries": "2%",
+    "HS code": "09041130"
+   },
+   "note": ""
+  },
+  {
+   "id": "clove",
+   "category": "spices",
+   "name": "Clove",
+   "about": "Our offered range of best quality Brown Cloves is grown and processed under hygienic conditions by the experts Sourced from parts of Kerala",
+   "specs": {
+    "Grade": "Bold Whole",
+    "Region": "Kerala",
+    "Country of origin": "India",
+    "Colour": "Brown",
+    "Moisture": "12%",
+    "Baby cloves": "2% per 100gm",
+    "Pack size": "1Kg, 5Kg",
+    "HS code": "09071020"
+   },
+   "note": ""
+  },
+  {
+   "id": "cinnamon",
+   "category": "spices",
+   "name": "Cinnamon",
+   "about": "Our offered range of best quality Cinnamon Sticks is grown and processed under hygienic conditions by the experts Sourced from parts of Kerala",
+   "specs": {
+    "Region": "Kerala",
+    "Country of origin": "India",
+    "Colour": "Brown",
+    "Moisture": "11%",
+    "Total ash": "5%",
+    "Acid-insoluble ash": "1%",
+    "Pack size": "1Kg, 5Kg",
+    "HS code": "09061110"
+   },
+   "note": ""
+  },
+  {
+   "id": "mace-flower",
+   "category": "spices",
+   "name": "Mace Flower",
+   "about": "Our offered range of best quality Mace Flower (Javitri) is grown and processed under hygienic conditions by the experts Sourced from parts of Kerala",
+   "specs": {
+    "Region": "Kerala",
+    "Country of origin": "India",
+    "Colour": "Red",
+    "Moisture": "12%",
+    "Pack size": "1Kg, 5Kg",
+    "Shelf life": "1 Yr",
+    "HS code": "09083190"
+   },
+   "note": ""
+  },
+  {
+   "id": "nutmeg",
+   "category": "spices",
+   "name": "Nutmeg",
+   "about": "",
+   "specs": {
+    "Region": "Kerala",
+    "Country of origin": "India",
+    "Colour": "Brown",
+    "Pack size": "1Kg, 5Kg",
+    "Storage": "Cool and dry place",
+    "HS code": "09083190"
+   },
+   "note": ""
+  },
+  {
+   "id": "coriander-seeds",
+   "category": "spices",
+   "name": "Coriander Seeds",
+   "about": "We are engaged in offering optimum quality bold size Coriander Seeds with good essential oil contents. Coriander is the ingredient of almost every Indian dish in some form or the other - either as coarse or fine powder. It provides fresh taste and aroma to any dish.",
+   "specs": {
+    "Grade": "Eagle, Single Parrot etc",
+    "Country of origin": "India",
+    "Colour": "Green",
+    "Moisture": "8%",
+    "Purity": "99%",
+    "Pack size": "25kg, 50kg",
+    "HS code": "09092110"
+   },
+   "note": ""
+  },
+  {
+   "id": "cumin-seeds",
+   "category": "spices",
+   "name": "Cumin Seeds",
+   "about": "Cumin , Jeera is a flowering plant in the family Apiaceae, native to the Irano-Turanian Region. Its seeds – each one contained within a fruit, which is dried – are used in the cuisines of many cultures in both whole and ground form",
+   "specs": {
+    "Country of origin": "India",
+    "Colour": "White, Brown",
+    "Moisture": "8%",
+    "Pack size": "25kg,50kg",
+    "Packaging type": "PP bags",
+    "Shelf life": "12 months",
+    "HS code": "09092110"
+   },
+   "note": ""
+  },
+  {
+   "id": "ajwain",
+   "category": "spices",
+   "name": "Ajwain",
+   "about": "Ajwain, ajowan, or Trachyspermum ammi—also known as ajowan caraway, thymol seeds, bishop's weed, or carom—is an annual herb in the family Apiaceae. Both the leaves and the seed like fruit of the plant are consumed by humans.",
+   "specs": {
+    "Country of origin": "India",
+    "Colour": "Green",
+    "Pack size": "25kg,50kg",
+    "Packaging type": "PP bags",
+    "Shelf life": "12 months",
+    "HS code": "0909914"
+   },
+   "note": ""
+  },
+  {
+   "id": "fenugreek-seeds",
+   "category": "spices",
+   "name": "Fenugreek Seeds",
+   "about": "Methi, Fenugreek is an annual plant in the family Fabaceae, with leaves consisting of three small obovate to oblong leaflets. It is cultivated worldwide as a semiarid crop. Its seeds and leaves are common ingredients in dishes from the Indian subcontinent, and have been used as a culinary ingredient since ancient times",
+   "specs": {
+    "Country of origin": "India",
+    "Colour": "Yellow",
+    "Pack size": "25kg,50kg",
+    "Packaging type": "PP bags",
+    "Storage": "Dry Place",
+    "Shelf life": "12 months",
+    "HS code": "0909914"
+   },
+   "note": ""
+  },
+  {
+   "id": "mustard-seeds",
+   "category": "spices",
+   "name": "Mustard Seeds",
+   "about": "Mustard seeds are the small round seeds of various mustard plants. The seeds are usually about 1 to 2 millimetres in diameter and may be colored from yellowish white to black , Rai , Sarso",
+   "specs": {
+    "Country of origin": "India",
+    "Colour": "Black",
+    "Purity": "99%",
+    "Pack size": "25kg,50kg",
+    "Packaging type": "PP bags",
+    "Shelf life": "12 months",
+    "HS code": "0909927"
+   },
+   "note": ""
+  },
+  {
+   "id": "star-anise",
+   "category": "spices",
+   "name": "Star Anise",
+   "about": "Full Autumn Premium Quality of Star Anise Origin: Vietnam Star anise, dry fruits of the star anise tree (Illicium verum), used as a spice and source of pharmaceutical chemicals. Picked before it ripens and then dried in the sun, turning it a deep brown or rust colour Sowed in Springs within a green house",
+   "specs": {
+    "Country of origin": "India",
+    "Colour": "Brown",
+    "Purity": "99%",
+    "Pack size": "5Kgs",
+    "Packaging type": "PP bags",
+    "Shelf life": "1-2 Years",
+    "HS code": "0909927"
+   },
+   "note": ""
+  },
+  {
+   "id": "sesame-seeds-white",
+   "category": "spices",
+   "name": "Sesame Seeds White",
+   "about": "Sesame seeds are tiny, oil-rich seeds that grow in pods on the Sesamum indicum plant. They have been used in folk medicine for thousands of years. Unhulled seeds have the outer, edible husk intact, while hulled seeds come without the husk. The hull gives the seeds a golden-brown hue.",
+   "specs": {
+    "Country of origin": "India",
+    "Colour": "White",
+    "Purity": "99%",
+    "Pack size": "50kg",
+    "Packaging type": "PP bags",
+    "Shelf life": "12 months",
+    "HS code": "0909927"
+   },
+   "note": ""
+  },
+  {
+   "id": "sesame-seeds-black",
+   "category": "spices",
+   "name": "Sesame Seeds Black",
+   "about": "Black sesame seeds are small, flat, oily seeds that grow in the fruit pods of the Sesamum indicum plant,",
+   "specs": {
+    "Country of origin": "India",
+    "Colour": "Black",
+    "Purity": "99%",
+    "Pack size": "50kg",
+    "Packaging type": "PP bags",
+    "Shelf life": "12 months",
+    "HS code": "12074010"
+   },
+   "note": ""
+  },
+  {
+   "id": "frozen-green-peas",
+   "category": "iqf",
+   "name": "Frozen Green Peas",
+   "about": "Green Peas is a pod shaped vegetable, Peas,Legume. Green Peas are packed with health benefits, high in protein, vitamins and minerals",
+   "specs": {
+    "Form": "Whole",
+    "Botanical name": "Pisum Sativum",
+    "Pack size": "1& 30Kgs",
+    "Storage": "- 18C and Below",
+    "Shelf life": "2 years",
+    "HS code": "07102100"
+   },
+   "note": ""
+  },
+  {
+   "id": "frozen-sweet-corn",
+   "category": "iqf",
+   "name": "Frozen Sweet Corn",
+   "about": "Sweet corn is considered a staple food in most parts of the world. Come in a juicy golden color. It containes health benefits, good nutrients, carbohydrates, fats and vitamins and present.",
+   "specs": {
+    "Form": "Kernels",
+    "Botanical name": "Zea mays L",
+    "Pack size": "1& 30Kgs",
+    "Storage": "- 18C and Below",
+    "Shelf life": "2 years",
+    "HS code": "07104000"
+   },
+   "note": ""
+  },
+  {
+   "id": "frozen-carrot",
+   "category": "iqf",
+   "name": "Frozen Carrot",
+   "about": "It’s a root vegetable, orange in color and is packed with antioxidants, vitamins and ditery fibres",
+   "specs": {
+    "Form": "Dices / Slices / Shreds",
+    "Botanical name": "Daucus carota subsp",
+    "Pack size": "1& 30Kgs",
+    "Storage": "- 18C and Below",
+    "Shelf life": "2 years",
+    "HS code": "07109000"
+   },
+   "note": ""
+  },
+  {
+   "id": "frozen-cauliflower",
+   "category": "iqf",
+   "name": "Frozen Cauliflower",
+   "about": "Cauliflower is a white coloured flower like vegetable, good source for phytochemical and also containes vital nutrients and vitamins",
+   "specs": {
+    "Form": "Florets",
+    "Botanical name": "Brassica Oleracea Var",
+    "Pack size": "1& 30Kgs",
+    "Storage": "- 18C and Below",
+    "Shelf life": "2 years",
+    "HS code": "07041000"
+   },
+   "note": ""
+  },
+  {
+   "id": "frozen-broccoli",
+   "category": "iqf",
+   "name": "Frozen Broccoli",
+   "about": "Broccoli is a edible green vegetable, which has large flower type of floret head and stalk which is edible and contains high nutrients and vitamins.",
+   "specs": {
+    "Form": "Florets",
+    "Botanical name": "Brassica Oleracea Var",
+    "Pack size": "1& 30Kgs",
+    "Storage": "- 18C and Below",
+    "Shelf life": "2 years",
+    "HS code": "07041000"
+   },
+   "note": ""
+  },
+  {
+   "id": "frozen-mix-vegetables",
+   "category": "iqf",
+   "name": "Frozen Mix Vegetables",
+   "about": "The frozen vegetables are sorted, washed,Peeled, drained and IQF frozen",
+   "specs": {
+    "Pack size": "1& 30Kgs",
+    "Storage": "- 18C and Below",
+    "Shelf life": "2 years"
+   },
+   "note": ""
+  },
+  {
+   "id": "frozen-french-fries",
+   "category": "iqf",
+   "name": "Frozen French Fries",
+   "about": "The french fries start with high quality potato and are sourced from dedicated farms. We take atmost care at the facility to ensure all the quality and saftey is monitored.",
+   "specs": {
+    "Grade": "6mm, 7mm, 9mm and 11mm Skin on",
+    "Shelf life": "18 months",
+    "Ingredients": "Potatoes(95%) & Edible vegetable oil ( Refined palmolein oil)",
+    "Allergen info": "Manufactured in a facility that process wheat and milk based products",
+    "HS code": "20041000"
+   },
+   "note": ""
+  },
+  {
+   "id": "frozen-hash-brown",
+   "category": "iqf",
+   "name": "Frozen Hash Brown",
+   "about": "The crispy hash browns are made with high quality potato and are sourced from dedicated farms. We take atmost care at the facility to ensure all the quality and saftey is monitored.",
+   "specs": {
+    "Grade": "Hash browns",
+    "Shelf life": "18 months",
+    "Ingredients": "Potatoes(93%) & Edible vegetable oil ( Refined palmolein oil), corn flour, potato flakes salt & dehydrated white onion powder",
+    "Allergen info": "Manufactured in a facility that process wheat and milk based products",
+    "HS code": "20041000"
+   },
+   "note": ""
+  },
+  {
+   "id": "speciality-potato-products",
+   "category": "iqf",
+   "name": "Speciality Potato Products",
+   "about": "Made with high quality potato. Seasoned with delicious blend of spices and condiments. The perfect snack for any time of the day. ( Spicy Wedges, Potato Cheese shots, Veggie Finger, Chilli Garlic bites, Herb Chilli Patty, Aloo Tikki, Lemon n Mint wedges)",
+   "specs": {
+    "Grade": "Hash browns",
+    "Shelf life": "18 months",
+    "Ingredients": "Potatoes(93%) & Edible vegetable oil ( Refined palmolein oil), corn flour, potato flakes salt & dehydrated white onion powder",
+    "Allergen info": "Manufactured in a facility that process wheat and milk based products",
+    "HS code": "20041000"
+   },
+   "note": ""
+  },
+  {
+   "id": "coconut-oil",
+   "category": "oils",
+   "name": "Coconut Oil",
+   "about": "Coconut oil is made by pressing fresh coconut meat or dried coconut meat called copra. Coconut oil is a white solid fat below around 25 °C (77 °F), and a clear thin liquid oil in warmer climates.",
+   "specs": {
+    "Region": "Kerala",
+    "Country of origin": "India",
+    "Extraction method": "Cold Press",
+    "Pack size": "1lt, 5lts, 25lts & 50Lts",
+    "Packaging type": "Pet Bottles, Cans & Drums",
+    "Shelf life": "12 months",
+    "HS code": "15131900"
+   },
+   "note": ""
+  },
+  {
+   "id": "extra-virgin-coconut-oil",
+   "category": "oils",
+   "name": "Extra Virgin Coconut Oil",
+   "about": "Virgin coconut oil uses fresh meat, while refined coconut oil typically uses copra. Unlike olive oil, the terms “virgin” and “extra virgin” are not regulated with coconut oil.",
+   "specs": {
+    "Region": "Kerala",
+    "Country of origin": "India",
+    "Extraction method": "Cold Press",
+    "Pack size": "1lt, 5lts, 25lts & 50Lts",
+    "Packaging type": "Pet Bottles, Cans & Drums",
+    "Shelf life": "12 months",
+    "HS code": "15131900"
+   },
+   "note": ""
+  },
+  {
+   "id": "groundnut-oil",
+   "category": "oils",
+   "name": "Groundnut Oil",
+   "about": "Peanut oil, also known as groundnut oil or arachis oil, is a vegetable oil derived from peanuts. The oil usually has a mild or neutral flavor but, if made with roasted peanuts, has a stronger peanut flavor and aroma.",
+   "specs": {
+    "Region": "Tamil Nadu, Karnataka",
+    "Country of origin": "India",
+    "Extraction method": "Cold Press",
+    "Pack size": "1lt, 5lts, 25lts & 50Lts",
+    "Packaging type": "Pet Bottles, Cans & Drums",
+    "Shelf life": "12 months",
+    "HS code": "15081000"
+   },
+   "note": ""
+  },
+  {
+   "id": "mustard-oil",
+   "category": "oils",
+   "name": "Mustard Oil",
+   "about": "Mustard oil is reddish-brown or amber in colour and is known for its strong smell and pungent sharp flavour. The pungency of mustard oil is due to the presence of allyl isothiocyanate. This fatty vegetable oil is obtained by pressing mustard seeds",
+   "specs": {
+    "Country of origin": "India",
+    "Extraction method": "Cold Press",
+    "Pack size": "1lt, 5lts & 50Lts",
+    "Packaging type": "Pet Bottles, Cans & Drums",
+    "Shelf life": "12 months",
+    "HS code": "15149120"
+   },
+   "note": ""
+  },
+  {
+   "id": "sesame-oil",
+   "category": "oils",
+   "name": "Sesame Oil",
+   "about": "Sesame oil is an edible vegetable oil derived from sesame seeds. Sesame Seed Oil widely known as Til Oil in India is extracted from the best-selected sesame seeds.",
+   "specs": {
+    "Region": "Tamil Nadu",
+    "Country of origin": "India",
+    "Extraction method": "Cold Press",
+    "Pack size": "1lt, 5lts & 50Lts",
+    "Packaging type": "Pet Bottles, Cans & Drums",
+    "Shelf life": "12 months",
+    "HS code": "15155091"
+   },
+   "note": ""
+  },
+  {
+   "id": "olive-oil",
+   "category": "oils",
+   "name": "Olive Oil",
+   "about": "Olive oil is a liquid fat obtained by pressing whole olives, the fruit of Olea europaea, a traditional tree crop of the Mediterranean Basin, and extracting the oil. Olive oil varies in colour from clear yellow to golden; some varieties obtained from unripe fruit have a greenish tinge.",
+   "specs": {
+    "Country of origin": ": Italy",
+    "Extraction method": "Cold Press",
+    "Pack size": "1lt, 5lts & 50Lts",
+    "Packaging type": "Pet Bottles,Glass Bottles & Drums",
+    "Shelf life": "18-24 months",
+    "HS code": "15091000"
+   },
+   "note": ""
+  },
+  {
+   "id": "extra-virgin-olive-oil",
+   "category": "oils",
+   "name": "Extra Virgin Olive Oil",
+   "about": "Extra virgin olive oil is highest quality, most flavorful and most expensive type of olive oil because it's unrefined--never heated or processed with chemicals. Extra virgin olive oil is the least processed form of olive oil. Due to this, it retains its natural antioxidants and vitamins.",
+   "specs": {
+    "Country of origin": "Italy",
+    "Extraction method": "Cold Press",
+    "Pack size": "1lt, 5lts & 50Lts",
+    "Packaging type": "Pet Bottles,Glass Bottles & Drums",
+    "Shelf life": "18-24 months",
+    "HS code": "15091000"
+   },
+   "note": ""
+  },
+  {
+   "id": "pure-ghee",
+   "category": "oils",
+   "name": "Pure Ghee",
+   "about": "Ghee is a semi-solid at room temperature, but it can be easily melted or liquified when heated. Ghee has a nutty, buttery flavor and a high smoke point, making it ideal for frying and sautéing. Ghee is often made from cow's milk, but it can also be made from the milk of goats, sheep, or buffalo.",
+   "specs": {
+    "Region": "Gujarat, Karnataka",
+    "Country of origin": "India",
+    "Extraction method": "Bilona Churning",
+    "Pack size": "500ml, 1lt & 15Lts",
+    "Packaging type": "Pet Bottles,Glass Bottles & Drums",
+    "Shelf life": "9-12 months",
+    "HS code": "4059020"
+   },
+   "note": ""
+  },
+  {
+   "id": "a2-ghee",
+   "category": "oils",
+   "name": "A2 Ghee",
+   "about": "A2 ghee means a type of clarified butter that is made from the milk of cows that naturally produce the A2 beta-casein protein. A2 cow ghee is grainy in texture and is made by heating butter on low flame for a long duration.",
+   "specs": {
+    "Region": "Gujarat, Karnataka",
+    "Country of origin": "India",
+    "Extraction method": "Bilona Churning",
+    "Pack size": "500ml, 1lt & 15Lts",
+    "Packaging type": "Pet Bottles,Glass Bottles & Drums",
+    "Shelf life": "9-12 months",
+    "HS code": "4059020"
+   },
+   "note": ""
+  }
+ ]
+}

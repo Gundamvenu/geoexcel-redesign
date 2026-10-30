@@ -1,0 +1,7 @@
+rice: dropped '1509 Basmati Sella Rice' – duplicate of 1509 Basmati Sella (source lists it twice with different moisture)
+PR 11 Steam Long Grain Rice: omitted Speciality 'Pure 1509 Basmati rice.' (says 1509 on a different variety)
+JEERAKASALA RICE: omitted specification paragraph (copy of 1121 Basmati text)
+PALAKADDAN MATTA RICE (UNDA): omitted specification paragraph (copy of 1121 Basmati text)
+rice: dropped 'PR 11 STEAM LONG GRAIN RICE' – duplicate of PR 11 Steam Long Grain (source lists it twice)
+NUTMEG: omitted shelf life '14Yr' (implausible)
+NUTMEG: omitted description (source text describes Mace Flower)

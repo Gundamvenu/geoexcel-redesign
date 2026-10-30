@@ -1,0 +1,126 @@
+---
+import '../styles/global.css';
+import { company } from '../data/company';
+import { u, stripBase } from '../data/url';
+import frauncesUrl from '@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2?url';
+import sansUrl from '@fontsource-variable/instrument-sans/files/instrument-sans-latin-wght-normal.woff2?url';
+
+interface Props { title: string; description: string; image?: string; type?: string; jsonLd?: object }
+const { title, description, image = 'og.png', type = 'website', jsonLd } = Astro.props;
+const path = stripBase(Astro.url.pathname);
+const fullTitle = title.includes('Geo Excel') ? title : `${title} | Geo Excel`;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL(u(image), Astro.site).href;
+const nav = [
+  { href: 'products/', label: 'Products' },
+  { href: 'credentials/', label: 'Credentials' },
+  { href: 'about/', label: 'About' },
+  { href: 'sustainability/', label: 'Sustainability' },
+];
+const isActive = (h: string) => path.startsWith('/' + h);
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="preload" href={frauncesUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={sansUrl} as="font" type="font/woff2" crossorigin />
+    <meta name="theme-color" content="#0e2235" />
+    <link rel="icon" href={u('favicon.ico')} sizes="any" />
+    <link rel="icon" type="image/png" href={u('favicon-64.png')} />
+    <link rel="apple-touch-icon" href={u('apple-touch-icon.png')} />
+    <meta property="og:site_name" content="Geo Excel" />
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to main content</a>
+    <header class="site-header">
+      <div class="wrap bar">
+        <a class="brand" href={u()} aria-label="Geo Excel, home">
+          <img src={u('img/mark.png')} alt="" width="30" height="46" />
+          <span>GEO EXCEL<small>Export trade · Bangalore</small></span>
+        </a>
+        <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" id="menu-btn">
+          <span aria-hidden="true">☰</span> Menu
+        </button>
+        <nav class="nav" id="nav" aria-label="Main">
+          {nav.map((n) => <a href={u(n.href)} aria-current={isActive(n.href) ? 'page' : undefined}>{n.label}</a>)}
+          <a class="btn btn-accent btn-sm" href={u('enquiry/')} aria-current={isActive('enquiry/') ? 'page' : undefined}>
+            Request a quote <span class="count" data-count hidden>0</span>
+          </a>
+        </nav>
+      </div>
+      <div class="stripe" aria-hidden="true"></div>
+    </header>
+
+    <main id="main"><slot /></main>
+
+    <footer class="site-footer">
+      <div class="wrap foot">
+        <div>
+          <h2>Geo Excel</h2>
+          <p>{company.tagline}. Rice, whole spices, IQF frozen vegetables and edible oils exported from Bangalore, India.</p>
+        </div>
+        <div>
+          <h2>Explore</h2>
+          <ul>
+            <li><a href={u('products/')}>Product catalogue</a></li>
+            <li><a href={u('credentials/')}>Credentials</a></li>
+            <li><a href={u('about/')}>About</a></li>
+            <li><a href={u('sustainability/')}>Sustainability</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2>Products</h2>
+          <ul>
+            <li><a href={u('products/?c=rice')}>Rice</a></li>
+            <li><a href={u('products/?c=spices')}>Whole spices</a></li>
+            <li><a href={u('products/?c=iqf')}>IQF frozen vegetables</a></li>
+            <li><a href={u('products/?c=oils')}>Edible oils &amp; ghee</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2>Contact</h2>
+          <address>
+            {company.addressLines.map((l) => <>{l}<br /></>)}
+            <a href={`tel:${company.phoneHref}`}>{company.phone}</a><br />
+            <a href={`mailto:${company.email}`}>{company.email}</a>
+          </address>
+        </div>
+      </div>
+      <div class="wrap legal">
+        © {new Date().getFullYear()} {company.legalName}. This is an independent redesign concept built from public information for the Geo Excel website challenge, not the live company site (<a href={company.liveSite} rel="noopener">geoexcel.group</a>).
+      </div>
+    </footer>
+
+    <script>
+      import { init } from '../scripts/basket';
+      init();
+      const btn = document.getElementById('menu-btn')!;
+      const nav = document.getElementById('nav')!;
+      btn.addEventListener('click', () => {
+        const open = nav.classList.toggle('open');
+        btn.setAttribute('aria-expanded', String(open));
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && nav.classList.contains('open')) {
+          nav.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+          btn.focus();
+        }
+      });
+    </script>
+  </body>
+</html>
